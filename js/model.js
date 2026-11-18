@@ -4,10 +4,12 @@ import { toKey, today } from "./dates.js";
 
 const NAME_MAX = 50;
 
+let state = load();
+
 export function validateHabit(name, type, days) {
   const errors = {};
 
-  const trimmed = name.trim(); // "  Bėgioti  " -> "Bėgioti"
+  const trimmed = name.trim(); 
 
   if (trimmed.length === 0) {
     errors.name = "Įveskite pavadinimą.";
@@ -31,4 +33,76 @@ export function hasErrors(errors) {
     return true;
   }
   return false;
+}
+
+
+export function getHabits() {
+  return state.habits;
+}
+
+export function getHabit(id) {
+  for (let i = 0; i < state.habits.length; i++) {
+    if (state.habits[i].id === id) {
+      return state.habits[i];
+    }
+  }
+  return null;
+}
+
+
+export function createHabit(name, type, days) {
+  const errors = validateHabit(name, type, days);
+  if (hasErrors(errors)) {
+    return { ok: false, errors: errors };
+  }
+
+  const habit = {
+    id: "h_" + Date.now(),
+    name: name.trim(),
+    type: type,
+    days: days,
+    createdAt: toKey(today())
+  };
+
+  state.habits.push(habit);
+  state.results[habit.id] = {};
+  save(state);
+
+  return { ok: true, habit: habit };
+}
+
+
+export function updateHabit(id, name, type, days) {
+  const habit = getHabit(id);
+  if (habit === null) {
+    return { ok: false, errors: { general: "Įprotis nerastas." } };
+  }
+
+  const errors = validateHabit(name, type, days);
+  if (hasErrors(errors)) {
+    return { ok: false, errors: errors };
+  }
+
+  habit.name = name.trim();
+  habit.type = type;
+  habit.days = days;
+ 
+  save(state);
+
+  return { ok: true, habit: habit };
+}
+
+
+
+export function deleteHabit(id) {
+  const remaining = [];
+  for (let i = 0; i < state.habits.length; i++) {
+    if (state.habits[i].id !== id) {
+      remaining.push(state.habits[i]);
+    }
+  }
+  state.habits = remaining;
+
+  delete state.results[id];
+  save(state);
 }
