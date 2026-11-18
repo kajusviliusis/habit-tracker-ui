@@ -1,5 +1,5 @@
 
-import { createHabit, updateHabit, getHabits, validateHabit, hasErrors } from "./model.js";
+import { createHabit, updateHabit, deleteHabit, getHabit, getHabits, validateHabit, hasErrors } from "./model.js";
 
 const btnAdd = document.getElementById("btn-add");
 const form = document.getElementById("habit-form");
@@ -16,10 +16,15 @@ const btnEveryday = document.getElementById("btn-everyday");
 const nameError = document.getElementById("name-error");
 const daysError = document.getElementById("days-error");
 const formTitle = document.getElementById("form-title");
+const deleteModal = document.getElementById("delete-modal");
+const deleteName = document.getElementById("delete-name");
+const btnDeleteCancel = document.getElementById("btn-delete-cancel");
+const btnDeleteConfirm = document.getElementById("btn-delete-confirm");
 
 
 let selectedDays = [];
 let editingId = null;
+let deletingId = null;
 let nameTouched = false;
 let daysTouched = false;
 
@@ -184,6 +189,30 @@ function saveForm() {
   }
 }
 
+export function openDeleteConfirm(id) {
+  const habit = getHabit(id);
+  if (habit === null) {
+    return;
+  }
+
+  deletingId = id;
+  deleteName.textContent = habit.name;
+  deleteModal.hidden = false;
+  btnDeleteCancel.focus();
+}
+
+function closeDeleteConfirm() {
+  deleteModal.hidden = true;
+  deletingId = null;
+}
+
+
+function confirmDelete() {
+  deleteHabit(deletingId);
+  closeDeleteConfirm();
+  console.log("Įpročiai:", getHabits());
+}
+
 btnAdd.addEventListener("click", openForm);
 btnCancel.addEventListener("click", closeForm);
 btnSave.addEventListener("click", saveForm);
@@ -209,6 +238,15 @@ nameInput.addEventListener("blur", function () {
 
 typeTodo.addEventListener("change", validateForm);
 typeNotTodo.addEventListener("change", validateForm);
+
+btnDeleteCancel.addEventListener("click", closeDeleteConfirm);
+btnDeleteConfirm.addEventListener("click", confirmDelete);
+
+deleteModal.addEventListener("click", function (event) {
+  if (event.target === deleteModal) {
+    closeDeleteConfirm();
+  }
+});
 
 for (let i = 0; i < dayButtons.length; i++) {
   dayButtons[i].addEventListener("click", function () {

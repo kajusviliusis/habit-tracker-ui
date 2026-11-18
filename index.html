@@ -76,6 +76,20 @@
     </section>
   </main>
 
+  <div id="delete-modal" class="modal-backdrop" hidden>
+    <div class="modal">
+      <h3>Pašalinti įprotį?</h3>
+      <p>
+        Įprotis „<strong id="delete-name"></strong>“ ir visa jo istorija bus ištrinti.
+        Šio veiksmo atšaukti negalima.
+      </p>
+      <div class="form-actions">
+        <button type="button" id="btn-delete-cancel" class="btn-secondary">Atšaukti</button>
+        <button type="button" id="btn-delete-confirm" class="btn-danger">Taip, šalinti</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="js/app.js"></script>
 </body>
 
