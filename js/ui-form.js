@@ -1,5 +1,5 @@
 
-import { createHabit, getHabits, validateHabit, hasErrors } from "./model.js";
+import { createHabit, updateHabit, getHabits, validateHabit, hasErrors } from "./model.js";
 
 const btnAdd = document.getElementById("btn-add");
 const form = document.getElementById("habit-form");
@@ -15,14 +15,43 @@ const btnWeekdays = document.getElementById("btn-weekdays");
 const btnEveryday = document.getElementById("btn-everyday");
 const nameError = document.getElementById("name-error");
 const daysError = document.getElementById("days-error");
+const formTitle = document.getElementById("form-title");
 
 
 let selectedDays = [];
+let editingId = null;
 let nameTouched = false;
 let daysTouched = false;
 
 function openForm() {
   resetForm();
+  editingId = null;
+  formTitle.textContent = "Naujas įprotis";
+  showForm();
+}
+
+export function openEditForm(id) {
+  const habit = getHabit(id);
+  if (habit === null) {
+    return;
+  }
+
+  resetForm();
+  editingId = id;
+  formTitle.textContent = "Redaguoti įprotį";
+
+  nameInput.value = habit.name;
+  updateCounter();
+
+  typeTodo.checked = habit.type === "todo";
+  typeNotTodo.checked = habit.type === "nottodo";
+
+  setDays(habit.days);
+
+  showForm();
+}
+
+function showForm() {
   form.hidden = false;
   btnAdd.hidden = true;
   nameInput.focus();
@@ -31,6 +60,7 @@ function openForm() {
 function closeForm() {
   form.hidden = true;
   btnAdd.hidden = false;
+  editingId = null;
 }
 
 function resetForm() {
@@ -137,8 +167,13 @@ function validateForm() {
 }
 
 function saveForm() {
-  const result = createHabit(nameInput.value, getType(), selectedDays);
-
+  let result;
+   if (editingId === null) {
+    result = createHabit(nameInput.value, getType(), selectedDays);
+  } else {
+    result = updateHabit(editingId, nameInput.value, getType(), selectedDays);
+  }
+  
   if (result.ok) {
     closeForm();
     console.log("Įpročiai:", getHabits()); // laikinai, kol nėra sąrašo 
