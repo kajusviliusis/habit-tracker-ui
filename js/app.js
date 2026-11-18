@@ -1,4 +1,4 @@
-// Randam elementus puslapyje pagal jų id
+
 const btnToday = document.getElementById("btn-today");
 const btnProgress = document.getElementById("btn-progress");
 const viewToday = document.getElementById("view-today");

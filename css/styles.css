@@ -1,16 +1,15 @@
-/* ===== Spalvos ir dydžiai (kintamieji) ===== */
+
 :root {
-  /* Jūsų paletė */
-  --bg: #f5f1ec;          /* labai šviesus fonas, kad nebūtų per tamsu */
+  
+  --bg: #f5f1ec;
   --white: #ffffff;
-  --text: #422701;        /* tamsiai ruda */
-  --text-muted: #705E46;  /* ruda */
-  --border: #C6C0B9;      /* pilkšva */
+  --text: #422701;
+  --text-muted: #705E46;
+  --border: #C6C0B9;
 
-  --accent: #705E46;      /* aktyvus mygtukas */
-  --accent-bg: #D6B588;   /* aktyvaus mygtuko fonas */
+  --accent: #705E46;
+  --accent-bg: #D6B588;
 
-  /* To-Do = alyvuogių žalia */
   --todo: #6b7f3a;
   --todo-bg: #e9ecd9;
   --todo-text: #3a4620;
@@ -23,7 +22,7 @@
   --radius: 8px;
 }
 
-/* ===== Bendri nustatymai ===== */
+
 * {
   box-sizing: border-box;
 }
@@ -46,7 +45,6 @@ button {
   cursor: pointer;
 }
 
-/* ===== Viršutinė juosta ===== */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -78,7 +76,7 @@ button {
   color: var(--accent);
 }
 
-/* ===== Pagrindinė dalis ===== */
+
 .app-main {
   max-width: 640px;
   margin: 0 auto;
