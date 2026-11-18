@@ -14,7 +14,6 @@
   --todo-bg: #e9ecd9;
   --todo-text: #3a4620;
 
-  /* Not-To-Do = terakota */
   --nottodo: #b5562f;
   --nottodo-bg: #f5e3d8;
   --nottodo-text: #6e2f14;
@@ -92,9 +91,122 @@ button {
   color: var(--text-muted);
 }
 
-/* ===== Didesni ekranai (nuo 768px) ===== */
 @media (min-width: 768px) {
   .app-main {
     padding: 24px;
   }
+}
+
+[hidden] {
+  display: none;
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--white);
+}
+
+.btn-secondary {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 12px 0 4px;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font: inherit;
+}
+
+.counter {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.type-row {
+  display: flex;
+  gap: 8px;
+}
+
+.type-option {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.type-option.todo {
+  border-left: 4px solid var(--todo);
+}
+
+.type-option.nottodo {
+  border-left: 4px solid var(--nottodo);
+}
+
+.days-row {
+  display: flex;
+  gap: 4px;
+}
+
+.day-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+}
+
+.day-btn.is-selected {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.error {
+  min-height: 20px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #b3261e;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
 }

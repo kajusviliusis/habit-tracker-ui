@@ -1,3 +1,4 @@
+import "./ui-form.js"
 
 const btnToday = document.getElementById("btn-today");
 const btnProgress = document.getElementById("btn-progress");
@@ -20,7 +21,6 @@ function showView(name) {
   }
 }
 
-// Kai paspaudžiamas mygtukas, iškviečiam showView
 btnToday.addEventListener("click", function () {
   showView("today");
 });
