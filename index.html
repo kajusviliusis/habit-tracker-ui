@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Įpročių sekiklis</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">Įpročiai</h1>
+    <nav class="app-nav">
+      <button type="button" id="btn-today" class="nav-btn is-active">Šiandien</button>
+      <button type="button" id="btn-progress" class="nav-btn">Pažanga</button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section id="view-today" class="view">
+      <h2 class="view-title">Šiandien</h2>
+      <p class="placeholder">Čia bus dienos įpročių sąrašas.</p>
+    </section>
+
+    <section id="view-progress" class="view" hidden>
+      <h2 class="view-title">Pažanga</h2>
+      <p class="placeholder">Čia bus langelių ir juostų rodiniai.</p>
+    </section>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

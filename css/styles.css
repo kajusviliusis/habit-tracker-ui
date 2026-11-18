@@ -1,0 +1,102 @@
+/* ===== Spalvos ir dydžiai (kintamieji) ===== */
+:root {
+  /* Jūsų paletė */
+  --bg: #f5f1ec;          /* labai šviesus fonas, kad nebūtų per tamsu */
+  --white: #ffffff;
+  --text: #422701;        /* tamsiai ruda */
+  --text-muted: #705E46;  /* ruda */
+  --border: #C6C0B9;      /* pilkšva */
+
+  --accent: #705E46;      /* aktyvus mygtukas */
+  --accent-bg: #D6B588;   /* aktyvaus mygtuko fonas */
+
+  /* To-Do = alyvuogių žalia */
+  --todo: #6b7f3a;
+  --todo-bg: #e9ecd9;
+  --todo-text: #3a4620;
+
+  /* Not-To-Do = terakota */
+  --nottodo: #b5562f;
+  --nottodo-bg: #f5e3d8;
+  --nottodo-text: #6e2f14;
+
+  --radius: 8px;
+}
+
+/* ===== Bendri nustatymai ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1, h2, p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ===== Viršutinė juosta ===== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-title {
+  font-size: 18px;
+}
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-btn {
+  padding: 4px 12px;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.nav-btn.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ===== Pagrindinė dalis ===== */
+.app-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.view-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.placeholder {
+  color: var(--text-muted);
+}
+
+/* ===== Didesni ekranai (nuo 768px) ===== */
+@media (min-width: 768px) {
+  .app-main {
+    padding: 24px;
+  }
+}
