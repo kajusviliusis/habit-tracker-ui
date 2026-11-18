@@ -1,5 +1,5 @@
 
-import { createHabit, getHabits } from "./model.js";
+import { createHabit, getHabits, validateHabit, hasErrors } from "./model.js";
 
 const btnAdd = document.getElementById("btn-add");
 const form = document.getElementById("habit-form");
@@ -13,10 +13,13 @@ const btnSave = document.getElementById("btn-save");
 const btnCancel = document.getElementById("btn-cancel");
 const btnWeekdays = document.getElementById("btn-weekdays");
 const btnEveryday = document.getElementById("btn-everyday");
+const nameError = document.getElementById("name-error");
+const daysError = document.getElementById("days-error");
 
 
 let selectedDays = [];
-
+let nameTouched = false;
+let daysTouched = false;
 
 function openForm() {
   resetForm();
@@ -31,6 +34,9 @@ function closeForm() {
 }
 
 function resetForm() {
+  nameTouched = false;
+  daysTouched = false;
+
   nameInput.value = "";
   updateCounter();
 
@@ -47,6 +53,7 @@ function updateCounter() {
 }
 
 function toggleDay(button) {
+  daysTouched = true;
   const day = Number(button.getAttribute("data-day"));
   const index = selectedDays.indexOf(day);
 
@@ -78,6 +85,7 @@ function updateDayButtons() {
     }
   }
   updateQuickButtons();
+  validateForm();
 }
 
 function updateQuickButtons() {
@@ -110,6 +118,24 @@ function getType() {
   return "";
 }
 
+function validateForm() {
+  const errors = validateHabit(nameInput.value, getType(), selectedDays);
+
+  btnSave.disabled = hasErrors(errors);
+
+  if (nameTouched && errors.name) {
+    nameError.textContent = errors.name;
+  } else {
+    nameError.textContent = "";
+  }
+
+  if (daysTouched && errors.days) {
+    daysError.textContent = errors.days;
+  } else {
+    daysError.textContent = "";
+  }
+}
+
 function saveForm() {
   const result = createHabit(nameInput.value, getType(), selectedDays);
 
@@ -117,21 +143,37 @@ function saveForm() {
     closeForm();
     console.log("Įpročiai:", getHabits()); // laikinai, kol nėra sąrašo 
   } else {
-    // Rodom klaidą
-    formError.textContent = result.errors.name || result.errors.type || result.errors.days;
+    nameTouched = true;
+    daysTouched = true;
+    validateForm();
   }
 }
 
 btnAdd.addEventListener("click", openForm);
 btnCancel.addEventListener("click", closeForm);
 btnSave.addEventListener("click", saveForm);
-nameInput.addEventListener("input", updateCounter);
 btnWeekdays.addEventListener("click", function () {
+  daysTouched = true;
   setDays([1, 2, 3, 4, 5]);
 });
 btnEveryday.addEventListener("click", function () {
+  daysTouched = true;
   setDays([0, 1, 2, 3, 4, 5, 6]);
 });
+
+nameInput.addEventListener("input", function () {
+  nameTouched = true;
+  updateCounter();
+  validateForm();
+});
+
+nameInput.addEventListener("blur", function () {
+  nameTouched = true;
+  validateForm();
+});
+
+typeTodo.addEventListener("change", validateForm);
+typeNotTodo.addEventListener("change", validateForm);
 
 for (let i = 0; i < dayButtons.length; i++) {
   dayButtons[i].addEventListener("click", function () {

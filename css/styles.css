@@ -98,7 +98,7 @@ button {
 }
 
 [hidden] {
-  display: none;
+  display: none !important;
 }
 
 .btn-primary {
@@ -198,10 +198,15 @@ button {
 }
 
 .error {
-  min-height: 20px;
-  margin-top: 12px;
-  font-size: 14px;
+  min-height: 18px;
+  margin: 4px 0 0;
+  font-size: 13px;
   color: #b3261e;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .form-actions {
