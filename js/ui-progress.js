@@ -56,7 +56,7 @@ export function renderProgress() {
 
     const rate = successRate(habit, start, end);
     const details = document.createElement("span");
-    details.textContent = "Sėkmė: " + formatRate(rate) + " · Seka: " + currentStreak(habit) + " d.";
+    details.textContent = "Pažanga: " + formatRate(rate) + " · Streak: " + currentStreak(habit) + " d.";
 
     item.appendChild(name);
     item.appendChild(details);
