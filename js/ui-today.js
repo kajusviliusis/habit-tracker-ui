@@ -3,6 +3,7 @@
 import { getHabits, getHabitsForDate, isMarked, toggleResult } from "./model.js";
 import { WEEKDAYS_SHORT, today, addDays, toKey, formatLong } from "./dates.js";
 import { openEditForm, openDeleteConfirm } from "./ui-form.js";
+import { renderProgress } from "./ui-progress.js";
 
 const emptyState = document.getElementById("empty-state");
 const todoGroup = document.getElementById("todo-group");
@@ -102,6 +103,7 @@ function createHabitCard(habit) {
     btnMark.addEventListener("click", function () {
         toggleResult(habit.id, dateKey);
         renderList();
+        renderProgress();
     });
 
     const btnEdit = document.createElement("button");

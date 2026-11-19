@@ -293,6 +293,15 @@ button {
   padding: 0;
 }
 
+.progress-summary {
+  margin-bottom: 16px;
+}
+
+.progress-card {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 .habit-card {
   display: flex;
   align-items: center;
