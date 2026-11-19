@@ -64,3 +64,24 @@ export function overallRate(start, end) {
 
   return marked / total * 100;
 }
+
+export function currentStreak(habit) {
+  const todayKey = toKey(today());
+  let streak = 0;
+
+  for (let date = today(); toKey(date) >= habit.createdAt; date = addDays(date, -1)) {
+    if (!habit.days.includes(date.getDay())) {
+      continue;
+    }
+
+    const dateKey = toKey(date);
+    if (isMarked(habit.id, dateKey)) {
+      streak++;
+    } else if (dateKey !== todayKey) {
+      // siandien dar galima pazymeti, todel streako nenutraukia
+      break;
+    }
+  }
+
+  return streak;
+}
