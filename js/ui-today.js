@@ -1,6 +1,6 @@
 // "Šiandien" rodinio sąrašas (T14)
 
-import { getHabits, getHabitsForDate } from "./model.js";
+import { getHabits, getHabitsForDate, isMarked, toggleResult } from "./model.js";
 import { WEEKDAYS_SHORT, today, addDays, toKey, formatLong } from "./dates.js";
 import { openEditForm, openDeleteConfirm } from "./ui-form.js";
 
@@ -13,11 +13,16 @@ const dateLabel = document.getElementById("date-label");
 const btnPrevDay = document.getElementById("btn-prev-day");
 const btnNextDay = document.getElementById("btn-next-day");
 const btnGoToday = document.getElementById("btn-go-today");
+const futureNote = document.getElementById("future-note");
 
 let selectedDate = today();
 
 export function getSelectedDate() {
     return selectedDate;
+}
+
+function isFuture() {
+    return toKey(selectedDate) > toKey(today());
 }
 
 function formatDays(days) {
@@ -70,6 +75,35 @@ function createHabitCard(habit) {
     const actions = document.createElement("div");
     actions.className = "habit-actions";
 
+    const dateKey = toKey(selectedDate);
+    const marked = isMarked(habit.id, dateKey);
+
+    const btnMark = document.createElement("button");
+    btnMark.type = "button";
+    btnMark.className = "btn-mark";
+    btnMark.setAttribute("aria-pressed", marked);
+
+    if (isFuture()) {
+        btnMark.disabled = true;
+    }
+
+    if (marked) {
+        btnMark.classList.add("is-marked");
+        card.classList.add("is-done");
+        if (habit.type === "todo") {
+            btnMark.textContent = "✓ Atlikta";
+        } else {
+            btnMark.textContent = "✓ Išvengta";
+        }
+    } else {
+        btnMark.textContent = "Pažymėti";
+    }
+
+    btnMark.addEventListener("click", function () {
+        toggleResult(habit.id, dateKey);
+        renderList();
+    });
+
     const btnEdit = document.createElement("button");
     btnEdit.type = "button";
     btnEdit.className = "btn-small";
@@ -86,6 +120,7 @@ function createHabitCard(habit) {
         openDeleteConfirm(habit.id);
     });
 
+    actions.appendChild(btnMark);
     actions.appendChild(btnEdit);
     actions.appendChild(btnDelete);
 
@@ -101,6 +136,8 @@ function renderDate() {
 
     const isToday = toKey(selectedDate) === toKey(today());
     btnGoToday.hidden = isToday;
+
+    futureNote.hidden = !isFuture();
 }
 
 function changeDay(n) {

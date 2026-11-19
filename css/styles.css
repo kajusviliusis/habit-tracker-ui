@@ -393,3 +393,44 @@ button {
   color: var(--text-muted);
   text-decoration: underline;
 }
+
+.btn-mark {
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.habit-card.todo .btn-mark.is-marked {
+  background: var(--todo-bg);
+  border-color: var(--todo);
+  color: var(--todo-text);
+}
+
+.habit-card.nottodo .btn-mark.is-marked {
+  background: var(--nottodo-bg);
+  border-color: var(--nottodo);
+  color: var(--nottodo-text);
+}
+
+.habit-card.todo.is-done {
+  background: var(--todo-bg);
+}
+
+.habit-card.nottodo.is-done {
+  background: var(--nottodo-bg);
+}
+
+.date-note {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.btn-mark:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

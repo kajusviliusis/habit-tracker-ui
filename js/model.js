@@ -51,7 +51,7 @@ export function getHabit(id) {
 
 export function getHabitsForDate(date) {
   const dateKey = toKey(date);
-  const weekday = date.getDay();     
+  const weekday = date.getDay();
   const result = [];
 
   for (let i = 0; i < state.habits.length; i++) {
@@ -123,5 +123,35 @@ export function deleteHabit(id) {
   state.habits = remaining;
 
   delete state.results[id];
+  save(state);
+}
+
+export function isMarked(habitId, dateKey) {
+  const habitResults = state.results[habitId];
+  if (!habitResults) {
+    return false;
+  }
+  return habitResults[dateKey] === true;
+}
+
+export function toggleResult(habitId, dateKey) {
+  if (getHabit(habitId) === null) {
+    return;
+  }
+
+  if (dateKey > toKey(today())) {
+    return;
+  }
+
+  if (!state.results[habitId]) {
+    state.results[habitId] = {};
+  }
+
+  if (state.results[habitId][dateKey]) {
+    delete state.results[habitId][dateKey];
+  } else {
+    state.results[habitId][dateKey] = true;
+  }
+
   save(state);
 }
