@@ -293,6 +293,26 @@ button {
   padding: 0;
 }
 
+.period-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.period-btn {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+}
+
+.period-btn.is-active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
 .progress-summary {
   margin-bottom: 16px;
 }
