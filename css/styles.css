@@ -414,6 +414,11 @@ button {
   font-size: 18px;
 }
 
+.btn-icon:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-link {
   padding: 0;
   border: none;
