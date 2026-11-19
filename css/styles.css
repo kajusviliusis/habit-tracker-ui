@@ -275,3 +275,121 @@ button {
   background: #b3261e;
   color: var(--white);
 }
+
+.habit-group {
+  margin-top: 20px;
+}
+
+.group-title {
+  font-size: 14px;
+  font-weight: normal;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.habit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.habit-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.habit-card.todo {
+  border-left: 4px solid var(--todo);
+}
+
+.habit-card.nottodo {
+  border-left: 4px solid var(--nottodo);
+}
+
+.habit-icon {
+  font-size: 20px;
+}
+
+.habit-card.todo .habit-icon {
+  color: var(--todo);
+}
+
+.habit-card.nottodo .habit-icon {
+  color: var(--nottodo);
+}
+
+.habit-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-name {
+  overflow-wrap: anywhere;
+}
+
+.habit-days {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.habit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+#btn-add {
+  margin-bottom: 4px;
+}
+
+.date-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  margin-bottom: 12px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.date-center {
+  text-align: center;
+}
+
+.date-label {
+  font-weight: 600;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  font-size: 18px;
+}
+
+.btn-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: underline;
+}

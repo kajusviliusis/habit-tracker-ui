@@ -1,5 +1,8 @@
 import "./ui-form.js"
 
+import { setOnChange } from "./ui-form.js";
+import { renderList } from "./ui-today.js";
+
 const btnToday = document.getElementById("btn-today");
 const btnProgress = document.getElementById("btn-progress");
 const viewToday = document.getElementById("view-today");
@@ -28,3 +31,7 @@ btnToday.addEventListener("click", function () {
 btnProgress.addEventListener("click", function () {
   showView("progress");
 });
+
+setOnChange(renderList);
+
+renderList();

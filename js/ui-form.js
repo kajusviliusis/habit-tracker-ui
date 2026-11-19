@@ -28,6 +28,12 @@ let deletingId = null;
 let nameTouched = false;
 let daysTouched = false;
 
+let onChange = function () {};
+
+export function setOnChange(fn) {
+  onChange = fn;
+}
+
 function openForm() {
   resetForm();
   editingId = null;
@@ -181,7 +187,7 @@ function saveForm() {
   
   if (result.ok) {
     closeForm();
-    console.log("Įpročiai:", getHabits()); // laikinai, kol nėra sąrašo 
+    onChange();
   } else {
     nameTouched = true;
     daysTouched = true;
@@ -210,7 +216,7 @@ function closeDeleteConfirm() {
 function confirmDelete() {
   deleteHabit(deletingId);
   closeDeleteConfirm();
-  console.log("Įpročiai:", getHabits());
+  onChange();
 }
 
 btnAdd.addEventListener("click", openForm);

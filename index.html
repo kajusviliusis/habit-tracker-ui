@@ -21,6 +21,17 @@
     <section id="view-today" class="view">
       <h2 class="view-title">Šiandien</h2>
 
+      <div class="date-bar">
+        <button type="button" id="btn-prev-day" class="btn-icon" aria-label="Ankstesnė diena">←</button>
+
+        <div class="date-center">
+          <div id="date-label" class="date-label"></div>
+          <button type="button" id="btn-go-today" class="btn-link" hidden>Grįžti į šiandieną</button>
+        </div>
+
+        <button type="button" id="btn-next-day" class="btn-icon" aria-label="Kita diena">→</button>
+      </div>
+
       <button type="button" id="btn-add" class="btn-primary">+ Naujas įprotis</button>
 
       <div id="habit-form" class="card" hidden>
@@ -67,7 +78,19 @@
         </div>
       </div>
 
-      <p class="placeholder">Čia bus dienos įpročių sąrašas.</p>
+      <p id="empty-state" class="placeholder" hidden>
+        Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.
+      </p>
+
+      <div id="todo-group" class="habit-group" hidden>
+        <h3 class="group-title">Siekiami (To-Do)</h3>
+        <ul id="todo-list" class="habit-list"></ul>
+      </div>
+
+      <div id="nottodo-group" class="habit-group" hidden>
+        <h3 class="group-title">Vengiami (Not-To-Do)</h3>
+        <ul id="nottodo-list" class="habit-list"></ul>
+      </div>
     </section>
 
     <section id="view-progress" class="view" hidden>

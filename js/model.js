@@ -9,7 +9,7 @@ let state = load();
 export function validateHabit(name, type, days) {
   const errors = {};
 
-  const trimmed = name.trim(); 
+  const trimmed = name.trim();
 
   if (trimmed.length === 0) {
     errors.name = "Įveskite pavadinimą.";
@@ -49,6 +49,25 @@ export function getHabit(id) {
   return null;
 }
 
+export function getHabitsForDate(date) {
+  const dateKey = toKey(date);
+  const weekday = date.getDay();     
+  const result = [];
+
+  for (let i = 0; i < state.habits.length; i++) {
+    const habit = state.habits[i];
+
+    const isPlanned = habit.days.indexOf(weekday) !== -1;
+    const alreadyCreated = habit.createdAt <= dateKey;
+
+    if (isPlanned && alreadyCreated) {
+      result.push(habit);
+    }
+  }
+
+  return result;
+}
+
 
 export function createHabit(name, type, days) {
   const errors = validateHabit(name, type, days);
@@ -86,7 +105,7 @@ export function updateHabit(id, name, type, days) {
   habit.name = name.trim();
   habit.type = type;
   habit.days = days;
- 
+
   save(state);
 
   return { ok: true, habit: habit };
