@@ -65,6 +65,17 @@ export function overallRate(start, end) {
   return marked / total * 100;
 }
 
+export function dayState(habit, date) {
+  const dateKey = toKey(date);
+  if (dateKey > toKey(today())) {
+    return "future";
+  }
+  if (dateKey < habit.createdAt || !habit.days.includes(date.getDay())) {
+    return "not-scheduled";
+  }
+  return isMarked(habit.id, dateKey) ? "done" : "missed";
+}
+
 export function currentStreak(habit) {
   const todayKey = toKey(today());
   let streak = 0;

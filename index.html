@@ -116,7 +116,16 @@
       </div>
       <p id="progress-empty" class="placeholder" hidden>Dar nėra įpročių.</p>
       <div id="progress-grid" hidden>
-        <p class="placeholder">Dienų langeliai bus rodomi čia.</p>
+        <div class="grid-legend" aria-label="Langelių reikšmės">
+          <span class="grid-legend-item"><span class="progress-cell is-done" aria-hidden="true"></span>Pažymėta</span>
+          <span class="grid-legend-item"><span class="progress-cell is-missed" aria-hidden="true"></span>Praleista</span>
+          <span class="grid-legend-item"><span class="progress-cell is-not-scheduled" aria-hidden="true"></span>Nesuplanuota</span>
+          <span class="grid-legend-item"><span class="progress-cell is-future" aria-hidden="true"></span>Ateitis</span>
+        </div>
+        <div class="grid-weekdays" aria-hidden="true">
+          <span>Pr</span><span>An</span><span>Tr</span><span>Kt</span><span>Pn</span><span>Š</span><span>S</span>
+        </div>
+        <ul id="grid-list" class="habit-list"></ul>
       </div>
       <div id="progress-bars">
         <ul id="progress-list" class="habit-list"></ul>

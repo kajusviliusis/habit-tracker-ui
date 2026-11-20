@@ -1,11 +1,12 @@
 import { addDays, fromKey, MONTHS, MONTHS_OF, startOfMonth, startOfWeek, startOfYear, toKey, today } from "./dates.js";
 import { getHabits } from "./model.js";
-import { currentStreak, overallRate, successRate } from "./stats.js";
+import { currentStreak, dayState, overallRate, successRate } from "./stats.js";
 
 const overallRateLabel = document.getElementById("overall-rate");
 const progressEmpty = document.getElementById("progress-empty");
 const progressList = document.getElementById("progress-list");
 const progressGrid = document.getElementById("progress-grid");
+const gridList = document.getElementById("grid-list");
 const progressBars = document.getElementById("progress-bars");
 const viewButtons = document.querySelectorAll(".progress-view-btn");
 const periodButtons = document.querySelectorAll(".period-btn");
@@ -43,10 +44,49 @@ function formatPeriod(start, end) {
   return start.getFullYear() + " m.";
 }
 
+function renderGrid(habits, start, end) {
+  const stateLabels = {
+    done: "Pažymėta",
+    missed: "Praleista",
+    "not-scheduled": "Nesuplanuota",
+    future: "Ateitis"
+  };
+
+  for (const habit of habits) {
+    const item = document.createElement("li");
+    item.className = "habit-card grid-habit " + habit.type;
+
+    const name = document.createElement("strong");
+    name.textContent = habit.name;
+    item.appendChild(name);
+
+    const days = document.createElement("div");
+    days.className = "grid-days";
+
+    for (let date = start; toKey(date) <= toKey(end); date = addDays(date, 1)) {
+      const state = dayState(habit, date);
+      const dateLabel = date.getFullYear() + " m. " + MONTHS_OF[date.getMonth()] + " " + date.getDate() + " d.";
+      const cell = document.createElement("span");
+      cell.className = "progress-cell is-" + state;
+      cell.title = dateLabel + " – " + stateLabels[state];
+      cell.setAttribute("role", "img");
+      cell.setAttribute("aria-label", habit.name + ", " + dateLabel + ": " + stateLabels[state]);
+      if (toKey(date) === toKey(start)) {
+        cell.style.gridColumn = String((date.getDay() + 6) % 7 + 1);
+      }
+      days.appendChild(cell);
+    }
+
+    item.appendChild(days);
+    gridList.appendChild(item);
+  }
+}
+
 export function renderProgress() {
   const habits = getHabits();
   const currentDate = today();
   progressList.innerHTML = "";
+  gridList.innerHTML = "";
   progressEmpty.hidden = habits.length !== 0;
   progressGrid.hidden = selectedView !== "grid" || habits.length === 0;
   progressBars.hidden = selectedView !== "bars" || habits.length === 0;
@@ -109,6 +149,10 @@ export function renderProgress() {
     item.appendChild(name);
     item.appendChild(details);
     progressList.appendChild(item);
+  }
+
+  if (selectedView === "grid") {
+    renderGrid(habits, start, end);
   }
 
   overallRateLabel.textContent = formatRate(overallRate(start, end));

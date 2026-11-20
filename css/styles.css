@@ -341,6 +341,77 @@ button {
   border-left: 4px solid var(--nottodo);
 }
 
+.habit-card.grid-habit {
+  display: block;
+}
+
+.grid-days,
+.grid-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  text-align: center;
+}
+
+.grid-days {
+  margin-top: 8px;
+}
+
+.grid-weekdays {
+  margin: 0 12px 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.grid-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.grid-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.progress-cell {
+  display: block;
+  width: 22px;
+  height: 22px;
+  justify-self: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--white);
+}
+
+.grid-legend .progress-cell {
+  width: 14px;
+  height: 14px;
+}
+
+.progress-cell.is-done {
+  border-color: var(--todo);
+  background: var(--todo);
+}
+
+.progress-cell.is-missed {
+  border-color: var(--nottodo);
+  background: var(--nottodo-bg);
+}
+
+.progress-cell.is-not-scheduled {
+  border-color: var(--border);
+  background: #e9e6e2;
+}
+
+.progress-cell.is-future {
+  border-style: dashed;
+}
+
 .habit-icon {
   font-size: 20px;
 }
