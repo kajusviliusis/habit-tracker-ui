@@ -1,5 +1,4 @@
 :root {
-  --bg: #ffffff;
   --white: #ffffff;
   --text: #2f3640;
   --text-muted: #63748a;
@@ -21,7 +20,7 @@ body {
   font-size: 15px;
   line-height: 1.55;
   color: var(--text);
-  background: var(--bg);
+  background: var(--white);
 }
 
 body.has-dialog {
@@ -104,7 +103,6 @@ main.app-main {
 .progress-toolbar .period-row {
   flex: 1 1 420px;
   min-width: 0;
-  margin-bottom: 0;
   padding: 5px;
   border-radius: 999px;
   background: var(--accent-bg);
@@ -169,19 +167,6 @@ main.app-main {
   border-radius: 999px;
   background: var(--white);
   color: var(--accent);
-}
-
-.card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.card h3 {
-  font-size: 16px;
-  margin: 0 0 8px;
 }
 
 .label {
@@ -514,7 +499,6 @@ main.app-main {
   display: flex;
   flex-wrap: nowrap;
   gap: 2px;
-  margin-bottom: 20px;
 }
 
 .period-btn {
@@ -556,15 +540,12 @@ main.app-main {
   width: fit-content;
   padding: 4px;
   border-radius: 999px;
-  margin: 0;
   background: var(--accent-bg);
 }
 
 .progress-summary {
-  padding: 0 0 16px;
-  border: 0;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
-  border-radius: 0;
   margin-bottom: 20px;
 }
 
@@ -660,15 +641,17 @@ progress::-moz-progress-bar {
   text-align: right;
 }
 
-.habit-card {
+#view-today .habit-card {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 13px 56px 14px 12px;
+  margin-bottom: 15px;
   background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-left: 3px solid var(--habit-color);
+  border-radius: 4px;
 }
 
 .grid-days,
@@ -867,15 +850,12 @@ button.progress-cell:focus-visible {
   border-radius: 50%;
 }
 
-.habit-icon {
+#view-today .habit-card .habit-icon {
+  color: var(--habit-color);
   font-size: 20px;
 }
 
-.habit-card .habit-icon {
-  color: var(--habit-color);
-}
-
-.habit-card.nottodo .habit-icon {
+#view-today .habit-card.nottodo .habit-icon {
   font-size: 24px;
   font-weight: 700;
   line-height: 1;
@@ -922,24 +902,8 @@ button.progress-cell:focus-visible {
   color: var(--text-muted);
 }
 
-.habit-actions {
-  display: flex;
-  gap: 4px;
-}
-
-#view-today .habit-card {
-  position: relative;
-  flex-wrap: wrap;
-  gap: 8px 10px;
-  padding: 13px 56px 14px 12px;
-  border: 0;
-  border-left: 3px solid var(--habit-color);
-  border-radius: 4px;
-  margin-bottom: 15px;
-  background: var(--white);
-}
-
 #view-today .habit-actions {
+  display: flex;
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -1026,12 +990,6 @@ button.progress-cell:focus-visible {
 
 .date-label {
   font-weight: 600;
-}
-
-.date-bar > .date-label {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
 }
 
 .btn-icon {

@@ -27,14 +27,20 @@ let selectedView = "bars";
 let periodDate = today();
 let onGridChange = function () {};
 
+// Pranesame dienos rodiniui, kai pakeiciamas savaites langelis.
 export function setOnGridChange(fn) {
   onGridChange = fn;
 }
 
+// Procenta paverciame trumpu uzrasu arba bruksniu, kai dienu nera.
 function formatRate(rate) {
-  return rate === "–" ? rate : Math.round(rate) + " %";
+  if (rate === "–") {
+    return rate;
+  }
+  return Math.round(rate) + " %";
 }
 
+// Pagal pasirinkta laikotarpi randame jo pirma diena.
 function getPeriodStart(date) {
   if (selectedPeriod === "week") {
     return startOfWeek(date);
@@ -45,6 +51,7 @@ function getPeriodStart(date) {
   return startOfYear(date);
 }
 
+// Suformuojame lietuviska savaites, menesio arba metu uzrasa.
 function formatPeriod(start, end) {
   if (selectedPeriod === "week") {
     if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth()) {
@@ -59,6 +66,7 @@ function formatPeriod(start, end) {
   return start.getFullYear() + " m.";
 }
 
+// Kiekvienam iprociui parodome septynis savaites dienu langelius.
 function renderWeekGrid(habits, start, end) {
   const endKey = toKey(end);
   const todayKey = toKey(today());
@@ -72,7 +80,7 @@ function renderWeekGrid(habits, start, end) {
 
   for (const habit of habits) {
     const item = document.createElement("li");
-    item.className = "week-habit " + habit.type;
+    item.className = "week-habit";
     item.style.setProperty("--habit-color", habit.color);
 
     const nameWrap = document.createElement("div");
@@ -90,6 +98,7 @@ function renderWeekGrid(habits, start, end) {
     const days = document.createElement("div");
     days.className = "grid-days";
 
+    // Siandienos nezymeta diena dar laikoma laukiancia, o ne praleista.
     for (let date = start; toKey(date) <= endKey; date = addDays(date, 1)) {
       const dateKey = toKey(date);
       let state = dayState(habit, date);
@@ -98,6 +107,7 @@ function renderWeekGrid(habits, start, end) {
       }
       const dateLabel = date.getFullYear() + " m. " + MONTHS_OF[date.getMonth()] + " " + date.getDate() + " d.";
       const canToggle = dateKey < todayKey && (state === "done" || state === "missed");
+      // Praejusios suplanuotos dienos yra mygtukai, kitos tik informaciniai langeliai.
       const cell = document.createElement(canToggle ? "button" : "span");
       cell.className = "progress-cell is-" + state;
       cell.title = dateLabel + " – " + stateLabels[state];
@@ -133,10 +143,12 @@ function renderWeekGrid(habits, start, end) {
   }
 }
 
+// Menesio rodinyje sukuriame kalendoriu su bendra kiekvienos dienos pazanga.
 function renderMonthCalendar(habits, start, end) {
   const todayKey = toKey(today());
   const leadingDays = (start.getDay() + 6) % 7;
 
+  // Tusci langeliai sulygiuoja pirma menesio diena su savaites diena.
   for (let index = 0; index < leadingDays; index++) {
     const blank = document.createElement("span");
     blank.className = "calendar-blank";
@@ -147,6 +159,7 @@ function renderMonthCalendar(habits, start, end) {
   for (let date = start; toKey(date) <= toKey(end); date = addDays(date, 1)) {
     const dateKey = toKey(date);
     const rate = overallRate(date, date);
+    // Dienos busena parenkama pagal pazymetu iprociu dali.
     let state = "partial";
     if (dateKey > todayKey) {
       state = "future";
@@ -164,7 +177,14 @@ function renderMonthCalendar(habits, start, end) {
     cell.className = "calendar-day is-" + state;
     cell.setAttribute("role", "img");
     const dateLabel = date.getFullYear() + " m. " + MONTHS_OF[date.getMonth()] + " " + date.getDate() + " d.";
-    const resultLabel = dateKey > todayKey ? "Ateitis" : rate === "–" ? "Nesuplanuota" : formatRate(rate) + " pažymėta";
+    let resultLabel;
+    if (dateKey > todayKey) {
+      resultLabel = "Ateitis";
+    } else if (rate === "–") {
+      resultLabel = "Nesuplanuota";
+    } else {
+      resultLabel = formatRate(rate) + " pažymėta";
+    }
     cell.setAttribute("aria-label", dateLabel + ": " + resultLabel);
 
     const number = document.createElement("span");
@@ -181,6 +201,7 @@ function renderMonthCalendar(habits, start, end) {
       const indicators = document.createElement("span");
       indicators.className = "calendar-day-indicators";
       indicators.setAttribute("aria-hidden", "true");
+      // Spalvoti taskai nurodo ta diena pazymetus iprocius.
       for (const habit of habits) {
         if (dayState(habit, date) === "done") {
           const indicator = document.createElement("span");
@@ -204,10 +225,11 @@ function renderMonthCalendar(habits, start, end) {
   }
 }
 
+// Juostu rodinyje pateikiame kiekvieno iprocio procenta ir dienu skaiciu.
 function renderBars(habits, start, end) {
   for (const habit of habits) {
     const item = document.createElement("li");
-    item.className = "progress-card " + habit.type;
+    item.className = "progress-card";
     item.style.setProperty("--habit-color", habit.color);
 
     const marker = document.createElement("span");
@@ -245,9 +267,11 @@ function renderBars(habits, start, end) {
   }
 }
 
+// Atnaujiname valdiklius ir pasirinkto laikotarpio pazangos turini.
 export function renderProgress() {
   const habits = getHabits();
   const currentDate = today();
+  // Langeliai turi prasme tik savaites ir menesio rodiniuose.
   const gridAvailable = selectedPeriod === "week" || selectedPeriod === "month";
   if (!gridAvailable) {
     selectedView = "bars";
@@ -266,6 +290,7 @@ export function renderProgress() {
   gridList.hidden = selectedPeriod !== "week";
   monthCalendar.hidden = selectedPeriod !== "month";
 
+  // Aktyvius pasirinkimus pazymime ir vaizdu, ir aria-pressed atributu.
   for (const button of viewButtons) {
     const active = button.getAttribute("data-view") === selectedView;
     button.classList.toggle("is-active", active);
@@ -282,6 +307,7 @@ export function renderProgress() {
   let start = currentDate;
   let end = currentDate;
 
+  // Kalendorinio laikotarpio ribas naudojame visiems toliau esantiems skaiciavimams.
   if (selectedPeriod !== "all") {
     start = getPeriodStart(periodDate);
     if (selectedPeriod === "week") {
@@ -301,6 +327,7 @@ export function renderProgress() {
     return;
   }
 
+  // Visas laikotarpis prasideda nuo seniausio iprocio sukurimo dienos.
   if (selectedPeriod === "all") {
     let firstKey = habits[0].createdAt;
     for (const habit of habits) {
@@ -326,6 +353,7 @@ export function renderProgress() {
   overallProgress.value = rate === "–" ? 0 : rate;
 }
 
+// Laikotarpio ir rodinio mygtukai is naujo piesia pazanga.
 for (const button of periodButtons) {
   button.addEventListener("click", function () {
     selectedPeriod = button.getAttribute("data-period");
@@ -344,6 +372,7 @@ for (const button of viewButtons) {
   });
 }
 
+// Rodykles perkelia i gretima savaite, menesi arba metus.
 function changePeriod(amount) {
   if (selectedPeriod === "week") {
     periodDate = addDays(periodDate, amount * 7);

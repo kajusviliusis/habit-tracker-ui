@@ -1,5 +1,3 @@
-// "Šiandien" rodinio sąrašas (T14)
-
 import { getHabits, getHabitsForDate, isMarked, toggleResult } from "./model.js";
 import { WEEKDAYS_SHORT, today, addDays, toKey, formatLong } from "./dates.js";
 import { openEditForm, openDeleteConfirm } from "./ui-form.js";
@@ -20,6 +18,7 @@ const futureNote = document.getElementById("future-note");
 let selectedDate = today();
 let openMenu = null;
 
+// Uzdarome atidaryta iprocio veiksmu meniu ir prireikus graziname fokusa.
 function closeMenu(restoreFocus = false) {
     if (openMenu === null) {
         return;
@@ -33,14 +32,12 @@ function closeMenu(restoreFocus = false) {
     }
 }
 
-export function getSelectedDate() {
-    return selectedDate;
-}
-
+// Busimos dienos rodomos sarase, bet ju rezultatu zymeti negalima.
 function isFuture() {
     return toKey(selectedDate) > toKey(today());
 }
 
+// Tvarkarasti parodome trumpu, zmogui suprantamu uzrasu.
 function formatDays(days) {
     if (days.length === 7) {
         return "Kasdien";
@@ -52,6 +49,7 @@ function formatDays(days) {
         return "Darbo dienomis";
     }
 
+    // Dienas uzrase rikiuojame nuo pirmadienio, nors sekmadienio numeris yra 0.
     const order = [1, 2, 3, 4, 5, 6, 0];
     const names = [];
     for (let i = 0; i < order.length; i++) {
@@ -62,6 +60,7 @@ function formatDays(days) {
     return names.join(", ");
 }
 
+// Sukuriame vieno iprocio kortele su busena, seka ir veiksmais.
 function createHabitCard(habit) {
     const card = document.createElement("li");
     card.className = "habit-card " + habit.type;
@@ -111,6 +110,7 @@ function createHabitCard(habit) {
     const actions = document.createElement("div");
     actions.className = "habit-actions";
 
+    // Korteles mygtukas atspindi pasirinktos, o ne visada siandienos, dienos rezultata.
     const dateKey = toKey(selectedDate);
     const marked = isMarked(habit.id, dateKey);
 
@@ -125,7 +125,6 @@ function createHabitCard(habit) {
     }
 
     if (marked) {
-        btnMark.classList.add("is-marked");
         card.classList.add("is-done");
         if (habit.type === "todo") {
             btnMark.textContent = "✓ Atlikta";
@@ -137,6 +136,7 @@ function createHabitCard(habit) {
     }
     btnMark.setAttribute("aria-label", habit.name + ": " + btnMark.textContent);
 
+    // Po zymejimo atnaujiname abu rodinius ir paliekame fokusa ant mygtuko.
     btnMark.addEventListener("click", function () {
         toggleResult(habit.id, dateKey);
         renderList();
@@ -179,6 +179,7 @@ function createHabitCard(habit) {
         openDeleteConfirm(habit.id, menuToggle);
     });
 
+    // Vienu metu laikome atidaryta tik viena iprocio veiksmu meniu.
     menuToggle.addEventListener("click", function () {
         if (openMenu === menu) {
             closeMenu();
@@ -205,6 +206,7 @@ function createHabitCard(habit) {
     return card;
 }
 
+// Atnaujiname pasirinktos dienos uzrasa ir grizimo i siandiena mygtuka.
 function renderDate() {
     dateLabel.textContent = formatLong(selectedDate);
 
@@ -214,16 +216,19 @@ function renderDate() {
     futureNote.hidden = !isFuture();
 }
 
+// Rodykles perkelia pasirinkta diena pirmyn arba atgal.
 function changeDay(n) {
     selectedDate = addDays(selectedDate, n);
     renderList();
 }
 
+// Vienu paspaudimu griztame prie siandienos iprociu.
 function goToday() {
     selectedDate = today();
     renderList();
 }
 
+// Perpiesiame pasirinktos dienos siekiamu ir vengiamu iprociu sarasus.
 export function renderList() {
     closeMenu();
     renderDate();
@@ -235,6 +240,7 @@ export function renderList() {
     let todoCount = 0;
     let nottodoCount = 0;
 
+    // Skirtingi tipai pateikiami atskirose grupese.
     for (let i = 0; i < habits.length; i++) {
         const card = createHabitCard(habits[i]);
 
@@ -249,6 +255,7 @@ export function renderList() {
 
     todoGroup.hidden = todoCount === 0;
     nottodoGroup.hidden = nottodoCount === 0;
+    // Atskiriame visiskai tuscia programa nuo dienos be suplanuotu iprociu.
     if (getHabits().length === 0) {
         emptyState.textContent = "Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.";
         emptyState.hidden = false;
@@ -258,9 +265,9 @@ export function renderList() {
     } else {
         emptyState.hidden = true;
     }
-
 }
 
+// Dienos navigacija keicia data ir iskart atnaujina sarasa.
 btnPrevDay.addEventListener("click", function () {
     changeDay(-1);
 });
@@ -271,6 +278,7 @@ btnNextDay.addEventListener("click", function () {
 
 btnGoToday.addEventListener("click", goToday);
 
+// Meniu uzdarome paspaudus kitur, Escape klavisu arba fokusui isejus is meniu.
 document.addEventListener("click", function (event) {
     if (openMenu !== null && !openMenu.contains(event.target)) {
         closeMenu(openMenu.contains(document.activeElement));

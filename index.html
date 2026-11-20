@@ -45,10 +45,10 @@
 
           <p class="label">2. Tipas</p>
           <div class="type-row" role="group" aria-label="Įpročio tipas">
-            <label class="type-option todo">
+            <label class="type-option">
               <input type="radio" name="type" id="type-todo"> Siekiamas
             </label>
-            <label class="type-option nottodo">
+            <label class="type-option">
               <input type="radio" name="type" id="type-nottodo"> Vengiamas
             </label>
           </div>
@@ -69,8 +69,6 @@
           </div>
           <p id="days-error" class="error" aria-live="polite"></p>
 
-          <p id="form-error" class="error" aria-live="polite"></p>
-
           <div class="form-actions">
             <button type="button" id="btn-save" class="btn-primary">Išsaugoti</button>
             <button type="button" id="btn-cancel" class="btn-secondary">Atšaukti</button>
@@ -89,7 +87,7 @@
           <button type="button" class="nav-btn progress-view-btn" data-view="grid">Langeliai</button>
         </div>
       </div>
-      <div class="card progress-summary">
+      <div class="progress-summary">
         <progress id="overall-progress" max="100" value="0" aria-label="Bendra pažanga"></progress>
         <p>Bendra pažanga <strong id="overall-rate" aria-live="polite">–</strong></p>
       </div>

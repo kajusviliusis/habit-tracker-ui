@@ -1,7 +1,9 @@
 import { addDays, fromKey, toKey, today } from "./dates.js";
 import { getHabits, isMarked } from "./model.js";
 
+// Suskaiciuojame suplanuotas dienas pasirinktame laikotarpyje.
 export function scheduledDays(habit, start, end) {
+  // Dienos iki iprocio sukurimo ir po siandienos i statistika nepatenka.
   const startKey = toKey(start);
   const endKey = toKey(end);
   const todayKey = toKey(today());
@@ -22,7 +24,9 @@ export function scheduledDays(habit, start, end) {
   return count;
 }
 
+// Suskaiciuojame, kiek suplanuotu dienu buvo pazymeta.
 export function countMarkedDays(habit, start, end) {
+  // Naudojame tas pacias laikotarpio ribas kaip suplanuotu dienu skaiciavime.
   const startKey = toKey(start);
   const endKey = toKey(end);
   const todayKey = toKey(today());
@@ -39,6 +43,7 @@ export function countMarkedDays(habit, start, end) {
   return marked;
 }
 
+// Vieno iprocio sekme yra pazymetu ir suplanuotu dienu santykis.
 export function successRate(habit, start, end) {
   const total = scheduledDays(habit, start, end);
   if (total === 0) {
@@ -48,6 +53,7 @@ export function successRate(habit, start, end) {
   return countMarkedDays(habit, start, end) / total * 100;
 }
 
+// Bendra pazanga skaiciuojama is visu iprociu dienu sumos.
 export function overallRate(start, end) {
   const habits = getHabits();
   let total = 0;
@@ -65,6 +71,7 @@ export function overallRate(start, end) {
   return marked / total * 100;
 }
 
+// Nustatome langelio busena pagal data, tvarkarasti ir pazymeta rezultata.
 export function dayState(habit, date) {
   const dateKey = toKey(date);
   if (dateKey > toKey(today())) {
@@ -76,11 +83,13 @@ export function dayState(habit, date) {
   return isMarked(habit.id, dateKey) ? "done" : "missed";
 }
 
+// Skaiciuojame is eiles pazymetas suplanuotas dienas atgal nuo siandienos.
 export function currentStreak(habit) {
   const todayKey = toKey(today());
   let streak = 0;
 
   for (let date = today(); toKey(date) >= habit.createdAt; date = addDays(date, -1)) {
+    // Nesuplanuotos dienos sekos nenutraukia.
     if (!habit.days.includes(date.getDay())) {
       continue;
     }
@@ -89,7 +98,7 @@ export function currentStreak(habit) {
     if (isMarked(habit.id, dateKey)) {
       streak++;
     } else if (dateKey !== todayKey) {
-      // siandien dar galima pazymeti, todel streako nenutraukia
+      // Siandien dar galima pazymeti; ankstesne nezymeta diena seka nutraukia.
       break;
     }
   }

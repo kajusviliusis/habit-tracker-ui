@@ -5,8 +5,9 @@ import { addDays, toKey, today } from "./dates.js";
 const NAME_MAX = 50;
 const HABIT_COLORS = ["#36b8e6", "#945be8", "#ef646b", "#18b7b0", "#df62b5", "#d99a37"];
 
-let state = load();
+const state = load();
 
+// Parenkame dar nenaudojama spalva naujam iprociui.
 function nextHabitColor() {
   for (const color of HABIT_COLORS) {
     if (!state.habits.some(habit => habit.color === color)) {
@@ -17,6 +18,7 @@ function nextHabitColor() {
 }
 
 let colorsAdded = false;
+// Seniau issaugoti iprociai gali netureti spalvos.
 for (const habit of state.habits) {
   if (!habit.color) {
     habit.color = nextHabitColor();
@@ -27,6 +29,7 @@ if (colorsAdded) {
   save(state);
 }
 
+// Patikriname formos reiksmes pries kurdami arba redaguodami iproti.
 export function validateHabit(name, type, days) {
   const errors = {};
 
@@ -49,6 +52,7 @@ export function validateHabit(name, type, days) {
   return errors;
 }
 
+// Formoje pakanka vienos klaidos, kad saugojimas butu isjungtas.
 export function hasErrors(errors) {
   if (errors.name || errors.type || errors.days) {
     return true;
@@ -56,11 +60,12 @@ export function hasErrors(errors) {
   return false;
 }
 
-
+// Graziname esamus iprocius sarasu ir pazangos rodiniams.
 export function getHabits() {
   return state.habits;
 }
 
+// Surandame iproti pagal identifikatoriu.
 export function getHabit(id) {
   for (let i = 0; i < state.habits.length; i++) {
     if (state.habits[i].id === id) {
@@ -70,6 +75,7 @@ export function getHabit(id) {
   return null;
 }
 
+// Dienos sarase rodome tik jau sukurtus ir tai dienai suplanuotus iprocius.
 export function getHabitsForDate(date) {
   const dateKey = toKey(date);
   const weekday = date.getDay();
@@ -89,6 +95,7 @@ export function getHabitsForDate(date) {
   return result;
 }
 
+// Pridedame pavyzdinius iprocius ir dvieju menesiu rezultatus pristatymui.
 export function addDemoData() {
   const demoHabits = [
     { id: "demo_read", name: "Skaityti", type: "todo", days: [0, 1, 2, 3, 4, 5, 6] },
@@ -107,6 +114,7 @@ export function addDemoData() {
     state.habits.push(habit);
     state.results[habit.id] = {};
 
+    // Nepazymima kas septinta diena, kad pavyzdyje matytusi ir praleidimai.
     for (let day = 0; day < 60; day++) {
       const date = addDays(start, day);
       if (habit.days.includes(date.getDay()) && day % 7 !== 0) {
@@ -124,7 +132,7 @@ export function addDemoData() {
   return added;
 }
 
-
+// Sukuriame iproti su siandienos data ir tuscia rezultatu istorija.
 export function createHabit(name, type, days) {
   const errors = validateHabit(name, type, days);
   if (hasErrors(errors)) {
@@ -147,7 +155,7 @@ export function createHabit(name, type, days) {
   return { ok: true, habit: habit };
 }
 
-
+// Pakeiciame iprocio nustatymus, bet paliekame ankstesnius rezultatus.
 export function updateHabit(id, name, type, days) {
   const habit = getHabit(id);
   if (habit === null) {
@@ -168,8 +176,7 @@ export function updateHabit(id, name, type, days) {
   return { ok: true, habit: habit };
 }
 
-
-
+// Istriname iproti ir atskirai saugoma jo rezultatu istorija.
 export function deleteHabit(id) {
   const remaining = [];
   for (let i = 0; i < state.habits.length; i++) {
@@ -183,6 +190,7 @@ export function deleteHabit(id) {
   save(state);
 }
 
+// Patikriname, ar konkretus iprotis konkrecia diena buvo pazymetas.
 export function isMarked(habitId, dateKey) {
   const habitResults = state.results[habitId];
   if (!habitResults) {
@@ -191,11 +199,13 @@ export function isMarked(habitId, dateKey) {
   return habitResults[dateKey] === true;
 }
 
+// Pazymime arba atsaukiame dienos rezultata ir iskart ji issaugome.
 export function toggleResult(habitId, dateKey) {
   if (getHabit(habitId) === null) {
     return;
   }
 
+  // Ateities rezultatu saugoti neleidziame net jei funkcija kvieciama be UI.
   if (dateKey > toKey(today())) {
     return;
   }
