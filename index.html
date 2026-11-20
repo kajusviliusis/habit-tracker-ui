@@ -107,11 +107,20 @@
         <span id="period-label" class="date-label"></span>
         <button type="button" id="btn-next-period" class="btn-icon" aria-label="Kitas laikotarpis">→</button>
       </div>
+      <div class="period-row" role="group" aria-label="Pažangos rodinys">
+        <button type="button" class="nav-btn progress-view-btn" data-view="grid">Langeliai</button>
+        <button type="button" class="nav-btn progress-view-btn" data-view="bars">Juostos</button>
+      </div>
       <div class="card progress-summary">
         <p>Bendra pažanga: <strong id="overall-rate">–</strong></p>
       </div>
       <p id="progress-empty" class="placeholder" hidden>Dar nėra įpročių.</p>
-      <ul id="progress-list" class="habit-list"></ul>
+      <div id="progress-grid" hidden>
+        <p class="placeholder">Dienų langeliai bus rodomi čia.</p>
+      </div>
+      <div id="progress-bars">
+        <ul id="progress-list" class="habit-list"></ul>
+      </div>
     </section>
   </main>
 

@@ -5,6 +5,9 @@ import { currentStreak, overallRate, successRate } from "./stats.js";
 const overallRateLabel = document.getElementById("overall-rate");
 const progressEmpty = document.getElementById("progress-empty");
 const progressList = document.getElementById("progress-list");
+const progressGrid = document.getElementById("progress-grid");
+const progressBars = document.getElementById("progress-bars");
+const viewButtons = document.querySelectorAll(".progress-view-btn");
 const periodButtons = document.querySelectorAll(".period-btn");
 const periodNavigation = document.getElementById("period-navigation");
 const periodLabel = document.getElementById("period-label");
@@ -12,6 +15,7 @@ const btnPrevPeriod = document.getElementById("btn-prev-period");
 const btnNextPeriod = document.getElementById("btn-next-period");
 
 let selectedPeriod = "all";
+let selectedView = "bars";
 let periodDate = today();
 
 function formatRate(rate) {
@@ -44,6 +48,14 @@ export function renderProgress() {
   const currentDate = today();
   progressList.innerHTML = "";
   progressEmpty.hidden = habits.length !== 0;
+  progressGrid.hidden = selectedView !== "grid" || habits.length === 0;
+  progressBars.hidden = selectedView !== "bars" || habits.length === 0;
+
+  for (const button of viewButtons) {
+    const active = button.getAttribute("data-view") === selectedView;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", active);
+  }
 
   for (const button of periodButtons) {
     const active = button.getAttribute("data-period") === selectedPeriod;
@@ -106,6 +118,13 @@ for (const button of periodButtons) {
   button.addEventListener("click", function () {
     selectedPeriod = button.getAttribute("data-period");
     periodDate = today();
+    renderProgress();
+  });
+}
+
+for (const button of viewButtons) {
+  button.addEventListener("click", function () {
+    selectedView = button.getAttribute("data-view");
     renderProgress();
   });
 }
