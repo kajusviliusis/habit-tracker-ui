@@ -1,3 +1,5 @@
+/* Bendrieji stiliai, sriftai ir spalvos */
+
 :root {
   --white: #ffffff;
   --text: #2f3640;
@@ -48,18 +50,11 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
-.nav-btn {
-  padding: 7px 15px;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-muted);
+[hidden] {
+  display: none !important;
 }
 
-.nav-btn.is-active {
-  background: var(--white);
-  color: var(--text);
-}
+/* Puslapio isdestymas ir antraste */
 
 .site-header {
   background: var(--accent);
@@ -132,22 +127,69 @@ main.app-main {
   color: var(--text-muted);
 }
 
-@media (min-width: 768px) {
-  .app-main {
-    padding-right: 24px;
-    padding-left: 24px;
-  }
+.date-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0;
+  margin-bottom: 18px;
 }
 
-@media (min-width: 960px) {
-  main.app-main {
-    grid-template-columns: minmax(0, 2.45fr) minmax(315px, 0.95fr);
-    gap: 42px;
-  }
+.date-center {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
 }
 
-[hidden] {
-  display: none !important;
+.date-label {
+  font-weight: 600;
+}
+
+.date-note {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+#view-today .view-title {
+  margin: 1px 0 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#view-today .date-center {
+  order: -1;
+  text-align: left;
+}
+
+#view-today .date-label {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+footer.app-main {
+  padding-top: 24px;
+  padding-bottom: 40px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Mygtukai ir bendri valdikliai */
+
+.nav-btn {
+  padding: 7px 15px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.nav-btn.is-active {
+  background: var(--white);
+  color: var(--text);
 }
 
 .btn-primary {
@@ -168,6 +210,575 @@ main.app-main {
   background: var(--white);
   color: var(--accent);
 }
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  min-height: 40px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #d92f2b;
+  color: var(--white);
+}
+
+.period-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.period-btn {
+  flex: 1;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.period-btn.is-active {
+  background: var(--white);
+  color: var(--text);
+}
+
+.btn-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--white);
+  color: #6886ae;
+  font-size: 18px;
+}
+
+.btn-icon:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+.btn-mark {
+  flex: 1 1 100px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--white);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.btn-mark:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dienos iprociu korteles */
+
+.habit-group {
+  margin-top: 20px;
+}
+
+.habit-group:first-of-type {
+  margin-top: 0;
+}
+
+.daily-panel {
+  min-height: 120px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--white);
+}
+
+.group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.habit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#view-today .habit-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 13px 56px 14px 12px;
+  margin-bottom: 15px;
+  background: var(--white);
+  border-left: 3px solid var(--habit-color);
+  border-radius: 4px;
+}
+
+#view-today .habit-card .habit-icon {
+  color: var(--habit-color);
+  font-size: 20px;
+}
+
+#view-today .habit-card.nottodo .habit-icon {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.habit-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-name {
+  font-size: 15px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.habit-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.habit-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.streak-flame {
+  display: block;
+  width: 13px;
+  height: 15px;
+  transform: translateY(-1px);
+}
+
+.habit-days {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+#view-today .habit-actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 30px;
+}
+
+#view-today .habit-card.is-done {
+  background: color-mix(in srgb, var(--habit-color) 13%, white);
+}
+
+#view-today .habit-card.is-done .btn-mark {
+  background: var(--white);
+}
+
+.habit-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+
+.habit-menu-toggle {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 23px;
+  line-height: 1;
+}
+
+.habit-menu-toggle:hover,
+.habit-menu-toggle[aria-expanded="true"] {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.habit-menu-options {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  min-width: 150px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 8px 20px rgba(25, 39, 55, 0.12);
+}
+
+.habit-menu-options button {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.habit-menu-options button:hover,
+.habit-menu-options button:focus-visible {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* Pazangos juostos ir kalendorius */
+
+.progress-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+#period-navigation {
+  min-width: 0;
+  margin: 0;
+}
+
+#period-navigation .date-label {
+  font-size: 21px;
+  font-weight: 500;
+  text-align: left;
+}
+
+#view-switch {
+  width: fit-content;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--accent-bg);
+}
+
+.progress-summary {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.progress-summary p {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.progress-summary strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+progress {
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-bg);
+}
+
+progress::-webkit-progress-bar {
+  border-radius: 999px;
+  background: var(--accent-bg);
+}
+
+progress::-webkit-progress-value {
+  border-radius: 999px;
+  background: var(--habit-color, var(--accent));
+}
+
+progress::-moz-progress-bar {
+  border-radius: 999px;
+  background: var(--habit-color, var(--accent));
+}
+
+#overall-progress {
+  display: block;
+  width: 100%;
+  height: 9px;
+}
+
+.progress-card {
+  display: grid;
+  grid-template-columns: 16px minmax(120px, 1.25fr) minmax(0, 3.5fr) 60px;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+}
+
+.habit-marker {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 18px;
+  color: var(--habit-color);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.progress-card-info {
+  min-width: 0;
+}
+
+.progress-card-info strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.progress-card-total small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.progress-bar {
+  display: block;
+  width: 100%;
+  height: 13px;
+}
+
+.progress-card-total {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: right;
+}
+
+.grid-days,
+.grid-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  text-align: center;
+}
+
+.grid-weekdays {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.week-head,
+.week-habit {
+  display: grid;
+  grid-template-columns: minmax(130px, 1.25fr) minmax(0, 3.5fr) 60px;
+  align-items: center;
+  gap: 14px;
+}
+
+.week-head {
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-habit {
+  padding: 15px 0;
+}
+
+.week-habit-name {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 12px;
+}
+
+.week-habit-name strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.week-habit-count {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: right;
+}
+
+.grid-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.grid-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.progress-cell {
+  display: block;
+  width: min(24px, 100%);
+  height: 24px;
+  justify-self: center;
+  border: 1px solid var(--accent-bg);
+  border-radius: 5px;
+  background: var(--accent-bg);
+}
+
+.grid-legend .progress-cell {
+  width: 14px;
+  height: 14px;
+}
+
+.progress-cell.is-done {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.week-habit .progress-cell.is-done {
+  border-color: var(--habit-color);
+  background: var(--habit-color);
+}
+
+.progress-cell.is-missed {
+  border-color: #dfe8f5;
+  background: #e8eef7;
+}
+
+.progress-cell.is-pending {
+  border-color: var(--accent);
+  background: var(--white);
+}
+
+.progress-cell.is-not-scheduled {
+  border-color: #f0f3f8;
+  background: #f5f7fb;
+}
+
+.progress-cell.is-future {
+  border-color: #dce6f4;
+  border-style: dashed;
+  background: var(--white);
+}
+
+button.progress-cell {
+  padding: 0;
+}
+
+button.progress-cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.month-calendar {
+  margin-top: 4px;
+}
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-days {
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.calendar-weekdays {
+  padding: 11px 0;
+  color: var(--accent);
+  font-size: 12px;
+  text-align: center;
+}
+
+.calendar-day,
+.calendar-blank {
+  position: relative;
+  min-height: 94px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-blank,
+.calendar-day.is-future {
+  background: #fbfcfe;
+}
+
+.calendar-day.is-pending {
+  background: #f7faff;
+}
+
+.calendar-day-number {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.calendar-day-rate {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  color: var(--text);
+  font-size: 17px;
+}
+
+.calendar-day.is-done .calendar-day-rate {
+  color: var(--accent);
+}
+
+.calendar-day-indicators {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 60%;
+  max-height: 30px;
+  overflow: hidden;
+}
+
+.calendar-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+/* Formos ir dialogai */
 
 .label {
   display: block;
@@ -238,11 +849,6 @@ main.app-main {
   margin: 4px 0 0;
   font-size: 13px;
   color: #b3261e;
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .form-actions {
@@ -451,618 +1057,20 @@ main.app-main {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .toast {
-    animation: none;
+/* Prisitaikymas prie ekrano dydzio */
+
+@media (min-width: 768px) {
+  .app-main {
+    padding-right: 24px;
+    padding-left: 24px;
   }
 }
 
-.btn-danger {
-  min-height: 40px;
-  padding: 9px 20px;
-  border: none;
-  border-radius: 999px;
-  background: #d92f2b;
-  color: var(--white);
-}
-
-.habit-group {
-  margin-top: 20px;
-}
-
-.habit-group:first-of-type {
-  margin-top: 0;
-}
-
-.daily-panel {
-  min-height: 120px;
-  padding: 16px 18px;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  background: var(--white);
-}
-
-.group-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin: 0 0 12px;
-}
-
-.habit-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.period-row {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 2px;
-}
-
-.period-btn {
-  flex: 1;
-  padding: 9px 10px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.period-btn.is-active {
-  background: var(--white);
-  color: var(--text);
-}
-
-.progress-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-#period-navigation {
-  min-width: 0;
-  margin: 0;
-}
-
-#period-navigation .date-label {
-  font-size: 21px;
-  font-weight: 500;
-  text-align: left;
-}
-
-#view-switch {
-  width: fit-content;
-  padding: 4px;
-  border-radius: 999px;
-  background: var(--accent-bg);
-}
-
-.progress-summary {
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 20px;
-}
-
-.progress-summary p {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.progress-summary strong {
-  color: var(--text);
-  font-weight: 600;
-}
-
-progress {
-  appearance: none;
-  -webkit-appearance: none;
-  overflow: hidden;
-  border: 0;
-  border-radius: 999px;
-  background: var(--accent-bg);
-}
-
-progress::-webkit-progress-bar {
-  border-radius: 999px;
-  background: var(--accent-bg);
-}
-
-progress::-webkit-progress-value {
-  border-radius: 999px;
-  background: var(--habit-color, var(--accent));
-}
-
-progress::-moz-progress-bar {
-  border-radius: 999px;
-  background: var(--habit-color, var(--accent));
-}
-
-#overall-progress {
-  display: block;
-  width: 100%;
-  height: 9px;
-}
-
-.progress-card {
-  display: grid;
-  grid-template-columns: 16px minmax(120px, 1.25fr) minmax(0, 3.5fr) 60px;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 0;
-}
-
-.habit-marker {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 16px;
-  height: 18px;
-  color: var(--habit-color);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.progress-card-info {
-  min-width: 0;
-}
-
-.progress-card-info strong {
-  display: block;
-  overflow-wrap: anywhere;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.progress-card-total small {
-  display: block;
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.progress-bar {
-  display: block;
-  width: 100%;
-  height: 13px;
-}
-
-.progress-card-total {
-  color: var(--text-muted);
-  font-size: 13px;
-  text-align: right;
-}
-
-#view-today .habit-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 10px;
-  padding: 13px 56px 14px 12px;
-  margin-bottom: 15px;
-  background: var(--white);
-  border-left: 3px solid var(--habit-color);
-  border-radius: 4px;
-}
-
-.grid-days,
-.grid-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
-  text-align: center;
-}
-
-.week-head,
-.week-habit {
-  display: grid;
-  grid-template-columns: minmax(130px, 1.25fr) minmax(0, 3.5fr) 60px;
-  align-items: center;
-  gap: 14px;
-}
-
-.week-head {
-  padding: 0 0 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.grid-weekdays {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.week-habit {
-  padding: 15px 0;
-}
-
-.week-habit-name {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  gap: 12px;
-}
-
-.week-habit-name strong {
-  overflow-wrap: anywhere;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.week-habit-count {
-  color: var(--text-muted);
-  font-size: 13px;
-  text-align: right;
-}
-
-.grid-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  margin-bottom: 18px;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.grid-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.progress-cell {
-  display: block;
-  width: min(24px, 100%);
-  height: 24px;
-  justify-self: center;
-  border: 1px solid var(--accent-bg);
-  border-radius: 5px;
-  background: var(--accent-bg);
-}
-
-.grid-legend .progress-cell {
-  width: 14px;
-  height: 14px;
-}
-
-.progress-cell.is-done {
-  border-color: var(--accent);
-  background: var(--accent);
-}
-
-.week-habit .progress-cell.is-done {
-  border-color: var(--habit-color);
-  background: var(--habit-color);
-}
-
-.progress-cell.is-missed {
-  border-color: #dfe8f5;
-  background: #e8eef7;
-}
-
-.progress-cell.is-pending {
-  border-color: var(--accent);
-  background: var(--white);
-}
-
-.progress-cell.is-not-scheduled {
-  border-color: #f0f3f8;
-  background: #f5f7fb;
-}
-
-.progress-cell.is-future {
-  border-color: #dce6f4;
-  border-style: dashed;
-  background: var(--white);
-}
-
-button.progress-cell {
-  padding: 0;
-}
-
-button.progress-cell:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.month-calendar {
-  margin-top: 4px;
-}
-
-.calendar-weekdays,
-.calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.calendar-weekdays {
-  padding: 11px 0;
-  color: var(--accent);
-  font-size: 12px;
-  text-align: center;
-}
-
-.calendar-days {
-  border-top: 1px solid var(--border);
-  border-left: 1px solid var(--border);
-}
-
-.calendar-day,
-.calendar-blank {
-  position: relative;
-  min-height: 94px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.calendar-blank,
-.calendar-day.is-future {
-  background: #fbfcfe;
-}
-
-.calendar-day.is-pending {
-  background: #f7faff;
-}
-
-.calendar-day-number {
-  position: absolute;
-  top: 8px;
-  right: 9px;
-  color: var(--text-muted);
-  font-size: 11px;
-}
-
-.calendar-day-rate {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  color: var(--text);
-  font-size: 17px;
-}
-
-.calendar-day.is-done .calendar-day-rate {
-  color: var(--accent);
-}
-
-.calendar-day-indicators {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  max-width: 60%;
-  max-height: 30px;
-  overflow: hidden;
-}
-
-.calendar-indicator {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-#view-today .habit-card .habit-icon {
-  color: var(--habit-color);
-  font-size: 20px;
-}
-
-#view-today .habit-card.nottodo .habit-icon {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.habit-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.habit-name {
-  font-size: 15px;
-  font-weight: 500;
-  overflow-wrap: anywhere;
-}
-
-.habit-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.habit-streak {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  flex: none;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.streak-flame {
-  display: block;
-  width: 13px;
-  height: 15px;
-  transform: translateY(-1px);
-}
-
-.habit-days {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-#view-today .habit-actions {
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-left: 30px;
-}
-
-#view-today .habit-card.is-done {
-  background: color-mix(in srgb, var(--habit-color) 13%, white);
-}
-
-#view-today .habit-card.is-done .btn-mark {
-  background: var(--white);
-}
-
-.habit-menu {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 2;
-}
-
-.habit-menu-toggle {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 23px;
-  line-height: 1;
-}
-
-.habit-menu-toggle:hover,
-.habit-menu-toggle[aria-expanded="true"] {
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.habit-menu-options {
-  position: absolute;
-  top: 36px;
-  right: 0;
-  min-width: 150px;
-  padding: 5px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--white);
-  box-shadow: 0 8px 20px rgba(25, 39, 55, 0.12);
-}
-
-.habit-menu-options button {
-  display: block;
-  width: 100%;
-  padding: 8px 10px;
-  border: 0;
-  border-radius: 5px;
-  background: transparent;
-  color: var(--text);
-  text-align: left;
-}
-
-.habit-menu-options button:hover,
-.habit-menu-options button:focus-visible {
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.date-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 0;
-  margin-bottom: 18px;
-}
-
-.date-center {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-}
-
-.date-label {
-  font-weight: 600;
-}
-
-.btn-icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--white);
-  color: #6886ae;
-  font-size: 18px;
-}
-
-.btn-icon:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-link {
-  padding: 0;
-  border: none;
-  background: none;
-  font-size: 13px;
-  color: var(--text-muted);
-  text-decoration: underline;
-}
-
-.btn-mark {
-  flex: 1 1 100px;
-  padding: 8px 10px;
-  font-size: 13px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  background: var(--white);
-  color: var(--accent);
-  white-space: nowrap;
-}
-
-.date-note {
-  margin-top: 2px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.btn-mark:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-#view-today .view-title {
-  margin: 1px 0 8px;
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 500;
-}
-
-#view-today .date-center {
-  order: -1;
-  text-align: left;
-}
-
-#view-today .date-label {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.25;
-}
-
-footer.app-main {
-  padding-top: 24px;
-  padding-bottom: 40px;
-  color: var(--text-muted);
-  font-size: 13px;
+@media (min-width: 960px) {
+  main.app-main {
+    grid-template-columns: minmax(0, 2.45fr) minmax(315px, 0.95fr);
+    gap: 42px;
+  }
 }
 
 @media (max-width: 959px) {
@@ -1183,5 +1191,10 @@ footer.app-main {
   .calendar-day-rate {
     left: 4px;
     font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
   }
 }

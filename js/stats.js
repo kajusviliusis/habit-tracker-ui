@@ -80,7 +80,10 @@ export function dayState(habit, date) {
   if (dateKey < habit.createdAt || !habit.days.includes(date.getDay())) {
     return "not-scheduled";
   }
-  return isMarked(habit.id, dateKey) ? "done" : "missed";
+  if (isMarked(habit.id, dateKey)) {
+    return "done";
+  }
+  return "missed";
 }
 
 // Skaiciuojame is eiles pazymetas suplanuotas dienas atgal nuo siandienos.

@@ -11,9 +11,11 @@ btnDemo.addEventListener("click", function () {
   const added = addDemoData();
   renderList();
   renderProgress();
-  demoStatus.textContent = added > 0
-    ? "Pavyzdiniai duomenys įkelti."
-    : "Pavyzdiniai duomenys jau įkelti.";
+  if (added > 0) {
+    demoStatus.textContent = "Pavyzdiniai duomenys įkelti.";
+  } else {
+    demoStatus.textContent = "Pavyzdiniai duomenys jau įkelti.";
+  }
 });
 
 // Forma pranesa apie pakeitimus, kad abu rodiniai liktu suderinti.

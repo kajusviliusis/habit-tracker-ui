@@ -1,4 +1,3 @@
-
 import { createHabit, updateHabit, deleteHabit, getHabit, validateHabit, hasErrors } from "./model.js";
 
 const btnAdd = document.getElementById("btn-add");
@@ -332,6 +331,12 @@ nameInput.addEventListener("blur", function () {
 typeTodo.addEventListener("change", validateForm);
 typeNotTodo.addEventListener("change", validateForm);
 
+for (let i = 0; i < dayButtons.length; i++) {
+  dayButtons[i].addEventListener("click", function () {
+    toggleDay(dayButtons[i]);
+  });
+}
+
 // Trinimo dialogas uzdaromas mygtuku, fono paspaudimu arba Escape klavisu.
 btnDeleteCancel.addEventListener("click", function () { closeDeleteConfirm(); });
 btnDeleteConfirm.addEventListener("click", confirmDelete);
@@ -357,9 +362,3 @@ deleteModal.addEventListener("keydown", function (event) {
     }
   }
 });
-
-for (let i = 0; i < dayButtons.length; i++) {
-  dayButtons[i].addEventListener("click", function () {
-    toggleDay(dayButtons[i]);
-  });
-}

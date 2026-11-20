@@ -353,6 +353,18 @@ export function renderProgress() {
   overallProgress.value = rate === "–" ? 0 : rate;
 }
 
+// Rodykles perkelia i gretima savaite, menesi arba metus.
+function changePeriod(amount) {
+  if (selectedPeriod === "week") {
+    periodDate = addDays(periodDate, amount * 7);
+  } else if (selectedPeriod === "month") {
+    periodDate = new Date(periodDate.getFullYear(), periodDate.getMonth() + amount, 1);
+  } else if (selectedPeriod === "year") {
+    periodDate = new Date(periodDate.getFullYear() + amount, 0, 1);
+  }
+  renderProgress();
+}
+
 // Laikotarpio ir rodinio mygtukai is naujo piesia pazanga.
 for (const button of periodButtons) {
   button.addEventListener("click", function () {
@@ -370,18 +382,6 @@ for (const button of viewButtons) {
     selectedView = button.getAttribute("data-view");
     renderProgress();
   });
-}
-
-// Rodykles perkelia i gretima savaite, menesi arba metus.
-function changePeriod(amount) {
-  if (selectedPeriod === "week") {
-    periodDate = addDays(periodDate, amount * 7);
-  } else if (selectedPeriod === "month") {
-    periodDate = new Date(periodDate.getFullYear(), periodDate.getMonth() + amount, 1);
-  } else if (selectedPeriod === "year") {
-    periodDate = new Date(periodDate.getFullYear() + amount, 0, 1);
-  }
-  renderProgress();
 }
 
 btnPrevPeriod.addEventListener("click", function () {

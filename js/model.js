@@ -1,4 +1,3 @@
-
 import { load, save } from "./storage.js";
 import { addDays, toKey, today } from "./dates.js";
 
@@ -10,7 +9,15 @@ const state = load();
 // Parenkame dar nenaudojama spalva naujam iprociui.
 function nextHabitColor() {
   for (const color of HABIT_COLORS) {
-    if (!state.habits.some(habit => habit.color === color)) {
+    let isUsed = false;
+    for (const habit of state.habits) {
+      if (habit.color === color) {
+        isUsed = true;
+        break;
+      }
+    }
+
+    if (!isUsed) {
       return color;
     }
   }
@@ -93,43 +100,6 @@ export function getHabitsForDate(date) {
   }
 
   return result;
-}
-
-// Pridedame pavyzdinius iprocius ir dvieju menesiu rezultatus pristatymui.
-export function addDemoData() {
-  const demoHabits = [
-    { id: "demo_read", name: "Skaityti", type: "todo", days: [0, 1, 2, 3, 4, 5, 6] },
-    { id: "demo_exercise", name: "Sportuoti", type: "todo", days: [1, 3, 5] },
-    { id: "demo_sweets", name: "Nevalgyti saldumynų", type: "nottodo", days: [0, 1, 2, 3, 4, 5, 6] }
-  ];
-  const start = addDays(today(), -59);
-  let added = 0;
-
-  for (const demoHabit of demoHabits) {
-    if (getHabit(demoHabit.id) !== null) {
-      continue;
-    }
-
-    const habit = { ...demoHabit, color: nextHabitColor(), createdAt: toKey(start) };
-    state.habits.push(habit);
-    state.results[habit.id] = {};
-
-    // Nepazymima kas septinta diena, kad pavyzdyje matytusi ir praleidimai.
-    for (let day = 0; day < 60; day++) {
-      const date = addDays(start, day);
-      if (habit.days.includes(date.getDay()) && day % 7 !== 0) {
-        state.results[habit.id][toKey(date)] = true;
-      }
-    }
-
-    added++;
-  }
-
-  if (added > 0) {
-    save(state);
-  }
-
-  return added;
 }
 
 // Sukuriame iproti su siandienos data ir tuscia rezultatu istorija.
@@ -221,4 +191,41 @@ export function toggleResult(habitId, dateKey) {
   }
 
   save(state);
+}
+
+// Pridedame pavyzdinius iprocius ir dvieju menesiu rezultatus pristatymui.
+export function addDemoData() {
+  const demoHabits = [
+    { id: "demo_read", name: "Skaityti", type: "todo", days: [0, 1, 2, 3, 4, 5, 6] },
+    { id: "demo_exercise", name: "Sportuoti", type: "todo", days: [1, 3, 5] },
+    { id: "demo_sweets", name: "Nevalgyti saldumynų", type: "nottodo", days: [0, 1, 2, 3, 4, 5, 6] }
+  ];
+  const start = addDays(today(), -59);
+  let added = 0;
+
+  for (const demoHabit of demoHabits) {
+    if (getHabit(demoHabit.id) !== null) {
+      continue;
+    }
+
+    const habit = { ...demoHabit, color: nextHabitColor(), createdAt: toKey(start) };
+    state.habits.push(habit);
+    state.results[habit.id] = {};
+
+    // Nepazymima kas septinta diena, kad pavyzdyje matytusi ir praleidimai.
+    for (let day = 0; day < 60; day++) {
+      const date = addDays(start, day);
+      if (habit.days.includes(date.getDay()) && day % 7 !== 0) {
+        state.results[habit.id][toKey(date)] = true;
+      }
+    }
+
+    added++;
+  }
+
+  if (added > 0) {
+    save(state);
+  }
+
+  return added;
 }
