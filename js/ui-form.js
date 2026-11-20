@@ -1,8 +1,10 @@
 
-import { createHabit, updateHabit, deleteHabit, getHabit, getHabits, validateHabit, hasErrors } from "./model.js";
+import { createHabit, updateHabit, deleteHabit, getHabit, validateHabit, hasErrors } from "./model.js";
 
 const btnAdd = document.getElementById("btn-add");
+const formBackdrop = document.getElementById("form-backdrop");
 const form = document.getElementById("habit-form");
+const btnCloseForm = document.getElementById("btn-close-form");
 const nameInput = document.getElementById("habit-name");
 const nameCounter = document.getElementById("name-counter");
 const typeTodo = document.getElementById("type-todo");
@@ -25,6 +27,7 @@ const toast = document.getElementById("toast");
 
 let selectedDays = [];
 let editingId = null;
+let formTrigger = null;
 let deletingId = null;
 let deleteTrigger = null;
 let nameTouched = false;
@@ -50,10 +53,10 @@ function openForm() {
   resetForm();
   editingId = null;
   formTitle.textContent = "Naujas įprotis";
-  showForm();
+  showForm(btnAdd);
 }
 
-export function openEditForm(id) {
+export function openEditForm(id, triggerButton) {
   const habit = getHabit(id);
   if (habit === null) {
     return;
@@ -71,20 +74,24 @@ export function openEditForm(id) {
 
   setDays(habit.days);
 
-  showForm();
+  showForm(triggerButton);
 }
 
-function showForm() {
-  form.hidden = false;
-  btnAdd.hidden = true;
+function showForm(triggerButton) {
+  formTrigger = triggerButton;
+  formBackdrop.hidden = false;
+  document.body.classList.add("has-dialog");
   nameInput.focus();
 }
 
-function closeForm() {
-  form.hidden = true;
-  btnAdd.hidden = false;
+function closeForm(restoreFocus = true) {
+  formBackdrop.hidden = true;
+  document.body.classList.remove("has-dialog");
   editingId = null;
-  btnAdd.focus();
+  if (restoreFocus) {
+    (formTrigger && formTrigger.isConnected ? formTrigger : btnAdd).focus();
+  }
+  formTrigger = null;
 }
 
 function resetForm() {
@@ -196,16 +203,19 @@ function validateForm() {
 }
 
 function saveForm() {
+  const savedId = editingId;
   let result;
-   if (editingId === null) {
+  if (editingId === null) {
     result = createHabit(nameInput.value, getType(), selectedDays);
   } else {
     result = updateHabit(editingId, nameInput.value, getType(), selectedDays);
   }
-  
+
   if (result.ok) {
-    closeForm();
+    closeForm(false);
     onChange();
+    const savedMenu = savedId === null ? null : document.getElementById("menu-" + savedId);
+    (savedMenu || btnAdd).focus();
     showToast("Išsaugota");
   } else {
     nameTouched = true;
@@ -224,13 +234,15 @@ export function openDeleteConfirm(id, triggerButton) {
   deleteTrigger = triggerButton;
   deleteName.textContent = habit.name;
   deleteModal.hidden = false;
+  document.body.classList.add("has-dialog");
   btnDeleteCancel.focus();
 }
 
-function closeDeleteConfirm() {
+function closeDeleteConfirm(restoreFocus = true) {
   deleteModal.hidden = true;
+  document.body.classList.remove("has-dialog");
   deletingId = null;
-  if (deleteTrigger) {
+  if (restoreFocus && deleteTrigger && deleteTrigger.isConnected) {
     deleteTrigger.focus();
   }
   deleteTrigger = null;
@@ -239,19 +251,39 @@ function closeDeleteConfirm() {
 
 function confirmDelete() {
   deleteHabit(deletingId);
-  closeDeleteConfirm();
+  closeDeleteConfirm(false);
   onChange();
-  if (btnAdd.hidden) {
-    btnCancel.focus();
-  } else {
-    btnAdd.focus();
-  }
+  btnAdd.focus();
   showToast("Įprotis pašalintas");
 }
 
 btnAdd.addEventListener("click", openForm);
-btnCancel.addEventListener("click", closeForm);
+btnCloseForm.addEventListener("click", function () { closeForm(); });
+btnCancel.addEventListener("click", function () { closeForm(); });
 btnSave.addEventListener("click", saveForm);
+formBackdrop.addEventListener("click", function (event) {
+  if (event.target === formBackdrop) {
+    closeForm();
+  }
+});
+
+formBackdrop.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeForm();
+  } else if (event.key === "Tab") {
+    const focusable = form.querySelectorAll("button:not([disabled]), input:not([disabled])");
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+});
 btnWeekdays.addEventListener("click", function () {
   daysTouched = true;
   setDays([1, 2, 3, 4, 5]);
@@ -275,7 +307,7 @@ nameInput.addEventListener("blur", function () {
 typeTodo.addEventListener("change", validateForm);
 typeNotTodo.addEventListener("change", validateForm);
 
-btnDeleteCancel.addEventListener("click", closeDeleteConfirm);
+btnDeleteCancel.addEventListener("click", function () { closeDeleteConfirm(); });
 btnDeleteConfirm.addEventListener("click", confirmDelete);
 
 deleteModal.addEventListener("click", function (event) {

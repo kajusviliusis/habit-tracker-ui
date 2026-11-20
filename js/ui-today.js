@@ -17,6 +17,20 @@ const btnGoToday = document.getElementById("btn-go-today");
 const futureNote = document.getElementById("future-note");
 
 let selectedDate = today();
+let openMenu = null;
+
+function closeMenu(restoreFocus = false) {
+    if (openMenu === null) {
+        return;
+    }
+    const toggle = openMenu.querySelector(".habit-menu-toggle");
+    openMenu.querySelector(".habit-menu-options").hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+    openMenu = null;
+    if (restoreFocus) {
+        toggle.focus();
+    }
+}
 
 export function getSelectedDate() {
     return selectedDate;
@@ -109,31 +123,63 @@ function createHabitCard(habit) {
         document.getElementById("mark-" + habit.id).focus();
     });
 
+    const menu = document.createElement("div");
+    menu.className = "habit-menu";
+
+    const menuToggle = document.createElement("button");
+    menuToggle.id = "menu-" + habit.id;
+    menuToggle.type = "button";
+    menuToggle.className = "habit-menu-toggle";
+    menuToggle.textContent = "⋮";
+    menuToggle.setAttribute("aria-label", "Įpročio „" + habit.name + "“ veiksmai");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-controls", "menu-actions-" + habit.id);
+
+    const menuOptions = document.createElement("div");
+    menuOptions.id = "menu-actions-" + habit.id;
+    menuOptions.className = "habit-menu-options";
+    menuOptions.hidden = true;
+
     const btnEdit = document.createElement("button");
     btnEdit.type = "button";
-    btnEdit.className = "btn-small";
     btnEdit.textContent = "Redaguoti";
     btnEdit.setAttribute("aria-label", "Redaguoti įprotį „" + habit.name + "“");
     btnEdit.addEventListener("click", function () {
-        openEditForm(habit.id);
+        closeMenu();
+        openEditForm(habit.id, menuToggle);
     });
 
     const btnDelete = document.createElement("button");
     btnDelete.type = "button";
-    btnDelete.className = "btn-small";
     btnDelete.textContent = "Šalinti";
     btnDelete.setAttribute("aria-label", "Šalinti įprotį „" + habit.name + "“");
     btnDelete.addEventListener("click", function () {
-        openDeleteConfirm(habit.id, btnDelete);
+        closeMenu();
+        openDeleteConfirm(habit.id, menuToggle);
     });
 
+    menuToggle.addEventListener("click", function () {
+        if (openMenu === menu) {
+            closeMenu();
+            return;
+        }
+        closeMenu();
+        menuOptions.hidden = false;
+        menuToggle.setAttribute("aria-expanded", "true");
+        openMenu = menu;
+        btnEdit.focus();
+    });
+
+    menuOptions.appendChild(btnEdit);
+    menuOptions.appendChild(btnDelete);
+    menu.appendChild(menuToggle);
+    menu.appendChild(menuOptions);
     actions.appendChild(btnMark);
-    actions.appendChild(btnEdit);
-    actions.appendChild(btnDelete);
 
     card.appendChild(icon);
     card.appendChild(info);
     card.appendChild(actions);
+    card.appendChild(menu);
 
     return card;
 }
@@ -158,6 +204,7 @@ function goToday() {
 }
 
 export function renderList() {
+    closeMenu();
     renderDate();
     const habits = getHabitsForDate(selectedDate);
 
@@ -202,3 +249,22 @@ btnNextDay.addEventListener("click", function () {
 });
 
 btnGoToday.addEventListener("click", goToday);
+
+document.addEventListener("click", function (event) {
+    if (openMenu !== null && !openMenu.contains(event.target)) {
+        closeMenu(openMenu.contains(document.activeElement));
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && openMenu !== null) {
+        event.preventDefault();
+        closeMenu(true);
+    }
+});
+
+document.addEventListener("focusin", function (event) {
+    if (openMenu !== null && !openMenu.contains(event.target)) {
+        closeMenu();
+    }
+});
