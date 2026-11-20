@@ -15,7 +15,8 @@
 
   <main class="app-main">
     <section id="view-progress" class="view">
-      <h2 class="view-title">Pažanga</h2>
+      <h2 class="view-title">Jūsų pažanga</h2>
+      <p class="view-intro">Stebėkite savo įpročius kiekvieną dieną.</p>
       <div class="progress-toolbar">
         <div class="period-row" role="group" aria-label="Pažangos laikotarpis">
           <button type="button" class="period-btn" data-period="week">Savaitė</button>
@@ -39,10 +40,10 @@
         <p class="label">Tipas</p>
         <div class="type-row" role="group" aria-label="Įpročio tipas">
           <label class="type-option todo">
-            <input type="radio" name="type" id="type-todo"> To-Do
+            <input type="radio" name="type" id="type-todo"> Siekiamas
           </label>
           <label class="type-option nottodo">
-            <input type="radio" name="type" id="type-nottodo"> Not-To-Do
+            <input type="radio" name="type" id="type-nottodo"> Vengiamas
           </label>
         </div>
 
@@ -70,30 +71,42 @@
         </div>
       </div>
 
-      <div id="period-navigation" class="date-bar" hidden>
-        <button type="button" id="btn-prev-period" class="btn-icon" aria-label="Ankstesnis laikotarpis">←</button>
-        <span id="period-label" class="date-label"></span>
-        <button type="button" id="btn-next-period" class="btn-icon" aria-label="Kitas laikotarpis">→</button>
-      </div>
-      <div class="period-row" role="group" aria-label="Pažangos rodinys">
-        <button type="button" class="nav-btn progress-view-btn" data-view="grid">Langeliai</button>
-        <button type="button" class="nav-btn progress-view-btn" data-view="bars">Juostos</button>
+      <div id="progress-navigation" class="progress-navigation">
+        <div id="period-navigation" class="date-bar" hidden>
+          <button type="button" id="btn-prev-period" class="btn-icon" aria-label="Ankstesnis laikotarpis">←</button>
+          <span id="period-label" class="date-label"></span>
+          <button type="button" id="btn-next-period" class="btn-icon" aria-label="Kitas laikotarpis">→</button>
+        </div>
+        <div id="view-switch" class="period-row" role="group" aria-label="Pažangos rodinys">
+          <button type="button" class="nav-btn progress-view-btn" data-view="bars">Juostos</button>
+          <button type="button" class="nav-btn progress-view-btn" data-view="grid">Langeliai</button>
+        </div>
       </div>
       <div class="card progress-summary">
-        <p>Bendra pažanga: <strong id="overall-rate" aria-live="polite">–</strong></p>
+        <progress id="overall-progress" max="100" value="0" aria-label="Bendra pažanga"></progress>
+        <p>Bendra pažanga <strong id="overall-rate" aria-live="polite">–</strong></p>
       </div>
       <p id="progress-empty" class="placeholder" hidden>Dar nėra įpročių.</p>
       <div id="progress-grid" hidden>
-        <div class="grid-legend" aria-label="Langelių reikšmės">
+        <div id="grid-legend" class="grid-legend" aria-label="Langelių reikšmės">
           <span class="grid-legend-item"><span class="progress-cell is-done" aria-hidden="true"></span>Pažymėta</span>
           <span class="grid-legend-item"><span class="progress-cell is-missed" aria-hidden="true"></span>Praleista</span>
+          <span class="grid-legend-item"><span class="progress-cell is-pending" aria-hidden="true"></span>Laukiama</span>
           <span class="grid-legend-item"><span class="progress-cell is-not-scheduled" aria-hidden="true"></span>Nesuplanuota</span>
           <span class="grid-legend-item"><span class="progress-cell is-future" aria-hidden="true"></span>Ateitis</span>
         </div>
-        <div class="grid-weekdays" aria-hidden="true">
-          <span>Pr</span><span>An</span><span>Tr</span><span>Kt</span><span>Pn</span><span>Š</span><span>S</span>
+        <div id="week-head" class="week-head" aria-hidden="true">
+          <span></span>
+          <div class="grid-weekdays"><span>Pr</span><span>An</span><span>Tr</span><span>Kt</span><span>Pn</span><span>Š</span><span>S</span></div>
+          <span></span>
         </div>
         <ul id="grid-list" class="habit-list"></ul>
+        <div id="month-calendar" class="month-calendar" hidden>
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>Pr</span><span>An</span><span>Tr</span><span>Kt</span><span>Pn</span><span>Š</span><span>S</span>
+          </div>
+          <div id="calendar-days" class="calendar-days"></div>
+        </div>
       </div>
       <div id="progress-bars">
         <ul id="progress-list" class="habit-list"></ul>
@@ -115,18 +128,20 @@
         <button type="button" id="btn-next-day" class="btn-icon" aria-label="Kita diena">→</button>
       </div>
 
-      <p id="empty-state" class="placeholder" hidden>
-        Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.
-      </p>
+      <div class="daily-panel">
+        <p id="empty-state" class="placeholder" hidden>
+          Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.
+        </p>
 
-      <div id="todo-group" class="habit-group" hidden>
-        <h3 class="group-title">Siekiami (To-Do)</h3>
-        <ul id="todo-list" class="habit-list"></ul>
-      </div>
+        <div id="todo-group" class="habit-group" hidden>
+          <h3 class="group-title">Siekiami įpročiai</h3>
+          <ul id="todo-list" class="habit-list"></ul>
+        </div>
 
-      <div id="nottodo-group" class="habit-group" hidden>
-        <h3 class="group-title">Vengiami (Not-To-Do)</h3>
-        <ul id="nottodo-list" class="habit-list"></ul>
+        <div id="nottodo-group" class="habit-group" hidden>
+          <h3 class="group-title">Vengiami įpročiai</h3>
+          <ul id="nottodo-list" class="habit-list"></ul>
+        </div>
       </div>
     </section>
   </main>
