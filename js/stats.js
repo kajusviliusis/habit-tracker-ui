@@ -22,7 +22,7 @@ export function scheduledDays(habit, start, end) {
   return count;
 }
 
-function countMarkedDays(habit, start, end) {
+export function countMarkedDays(habit, start, end) {
   const startKey = toKey(start);
   const endKey = toKey(end);
   const todayKey = toKey(today());

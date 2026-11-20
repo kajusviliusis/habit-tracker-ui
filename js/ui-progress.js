@@ -1,6 +1,6 @@
 import { addDays, fromKey, MONTHS, MONTHS_OF, startOfMonth, startOfWeek, startOfYear, toKey, today } from "./dates.js";
 import { getHabits } from "./model.js";
-import { currentStreak, dayState, overallRate, successRate } from "./stats.js";
+import { countMarkedDays, currentStreak, dayState, overallRate, scheduledDays, successRate } from "./stats.js";
 
 const overallRateLabel = document.getElementById("overall-rate");
 const progressEmpty = document.getElementById("progress-empty");
@@ -139,14 +139,32 @@ export function renderProgress() {
     const item = document.createElement("li");
     item.className = "habit-card progress-card " + habit.type;
 
+    const header = document.createElement("div");
+    header.className = "progress-card-header";
+
     const name = document.createElement("strong");
     name.textContent = habit.name;
 
     const rate = successRate(habit, start, end);
-    const details = document.createElement("span");
-    details.textContent = "Pažanga: " + formatRate(rate) + " · Streak: " + currentStreak(habit) + " d.";
+    const rateLabel = document.createElement("span");
+    rateLabel.textContent = "Pažanga: " + formatRate(rate);
+    header.appendChild(name);
+    header.appendChild(rateLabel);
 
-    item.appendChild(name);
+    const bar = document.createElement("progress");
+    bar.className = "progress-bar";
+    bar.max = 100;
+    bar.value = rate === "–" ? 0 : rate;
+    bar.setAttribute("aria-label", habit.name + ": " + formatRate(rate));
+
+    const marked = countMarkedDays(habit, start, end);
+    const total = scheduledDays(habit, start, end);
+    const details = document.createElement("div");
+    details.className = "progress-card-details";
+    details.textContent = marked + "/" + total + " d. · Streak: " + currentStreak(habit) + " d.";
+
+    item.appendChild(header);
+    item.appendChild(bar);
     item.appendChild(details);
     progressList.appendChild(item);
   }

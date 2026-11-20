@@ -317,9 +317,33 @@ button {
   margin-bottom: 16px;
 }
 
-.progress-card {
+.habit-card.progress-card {
+  display: block;
+}
+
+.progress-card-header {
+  display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  display: block;
+  width: 100%;
+  height: 12px;
+  accent-color: var(--todo);
+}
+
+.progress-card.nottodo .progress-bar {
+  accent-color: var(--nottodo);
+}
+
+.progress-card-details {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .habit-card {
