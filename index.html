@@ -11,29 +11,20 @@
 <body>
   <header class="app-header">
     <h1 class="app-title">Įpročiai</h1>
-    <nav class="app-nav">
-      <button type="button" id="btn-today" class="nav-btn is-active" aria-controls="view-today" aria-pressed="true">Šiandien</button>
-      <button type="button" id="btn-progress" class="nav-btn" aria-controls="view-progress" aria-pressed="false">Pažanga</button>
-    </nav>
   </header>
 
   <main class="app-main">
-    <section id="view-today" class="view">
-      <h2 class="view-title">Šiandien</h2>
-
-      <div class="date-bar">
-        <button type="button" id="btn-prev-day" class="btn-icon" aria-label="Ankstesnė diena">←</button>
-
-        <div class="date-center">
-          <div id="date-label" class="date-label"></div>
-          <button type="button" id="btn-go-today" class="btn-link" hidden>Grįžti į šiandieną</button>
-          <p id="future-note" class="date-note" hidden>Ateities dienų žymėti negalima.</p>
+    <section id="view-progress" class="view">
+      <h2 class="view-title">Pažanga</h2>
+      <div class="progress-toolbar">
+        <div class="period-row" role="group" aria-label="Pažangos laikotarpis">
+          <button type="button" class="period-btn" data-period="week">Savaitė</button>
+          <button type="button" class="period-btn" data-period="month">Mėnuo</button>
+          <button type="button" class="period-btn" data-period="year">Metai</button>
+          <button type="button" class="period-btn" data-period="all">Visas laikotarpis</button>
         </div>
-
-        <button type="button" id="btn-next-day" class="btn-icon" aria-label="Kita diena">→</button>
+        <button type="button" id="btn-add" class="btn-primary">+ Naujas įprotis</button>
       </div>
-
-      <button type="button" id="btn-add" class="btn-primary">+ Naujas įprotis</button>
 
       <div id="habit-form" class="card" role="region" aria-labelledby="form-title" hidden>
         <h3 id="form-title">Naujas įprotis</h3>
@@ -79,29 +70,6 @@
         </div>
       </div>
 
-      <p id="empty-state" class="placeholder" hidden>
-        Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.
-      </p>
-
-      <div id="todo-group" class="habit-group" hidden>
-        <h3 class="group-title">Siekiami (To-Do)</h3>
-        <ul id="todo-list" class="habit-list"></ul>
-      </div>
-
-      <div id="nottodo-group" class="habit-group" hidden>
-        <h3 class="group-title">Vengiami (Not-To-Do)</h3>
-        <ul id="nottodo-list" class="habit-list"></ul>
-      </div>
-    </section>
-
-    <section id="view-progress" class="view" hidden>
-      <h2 class="view-title">Pažanga</h2>
-      <div class="period-row" role="group" aria-label="Pažangos laikotarpis">
-        <button type="button" class="period-btn" data-period="week">Savaitė</button>
-        <button type="button" class="period-btn" data-period="month">Mėnuo</button>
-        <button type="button" class="period-btn" data-period="year">Metai</button>
-        <button type="button" class="period-btn" data-period="all">Visas laikotarpis</button>
-      </div>
       <div id="period-navigation" class="date-bar" hidden>
         <button type="button" id="btn-prev-period" class="btn-icon" aria-label="Ankstesnis laikotarpis">←</button>
         <span id="period-label" class="date-label"></span>
@@ -129,6 +97,36 @@
       </div>
       <div id="progress-bars">
         <ul id="progress-list" class="habit-list"></ul>
+      </div>
+    </section>
+
+    <section id="view-today" class="view">
+      <h2 class="view-title">Šiandien</h2>
+
+      <div class="date-bar">
+        <button type="button" id="btn-prev-day" class="btn-icon" aria-label="Ankstesnė diena">←</button>
+
+        <div class="date-center">
+          <div id="date-label" class="date-label"></div>
+          <button type="button" id="btn-go-today" class="btn-link" hidden>Grįžti į šiandieną</button>
+          <p id="future-note" class="date-note" hidden>Ateities dienų žymėti negalima.</p>
+        </div>
+
+        <button type="button" id="btn-next-day" class="btn-icon" aria-label="Kita diena">→</button>
+      </div>
+
+      <p id="empty-state" class="placeholder" hidden>
+        Dar neturite įpročių. Sukurkite pirmąjį mygtuku „+ Naujas įprotis“.
+      </p>
+
+      <div id="todo-group" class="habit-group" hidden>
+        <h3 class="group-title">Siekiami (To-Do)</h3>
+        <ul id="todo-list" class="habit-list"></ul>
+      </div>
+
+      <div id="nottodo-group" class="habit-group" hidden>
+        <h3 class="group-title">Vengiami (Not-To-Do)</h3>
+        <ul id="nottodo-list" class="habit-list"></ul>
       </div>
     </section>
   </main>

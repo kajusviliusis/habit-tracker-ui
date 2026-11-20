@@ -64,11 +64,6 @@ input:focus-visible {
   font-size: 18px;
 }
 
-.app-nav {
-  display: flex;
-  gap: 4px;
-}
-
 .nav-btn {
   padding: 4px 12px;
   border: none;
@@ -84,9 +79,38 @@ input:focus-visible {
 
 
 .app-main {
-  max-width: 640px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 16px;
+}
+
+main.app-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+
+.view {
+  min-width: 0;
+}
+
+.progress-toolbar {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.progress-toolbar .period-row {
+  flex: 1 1 380px;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.progress-toolbar #btn-add {
+  margin-bottom: 0;
+  white-space: nowrap;
 }
 
 .view-title {
@@ -101,6 +125,13 @@ input:focus-visible {
 @media (min-width: 768px) {
   .app-main {
     padding: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  main.app-main {
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.85fr);
+    gap: 32px;
   }
 }
 
@@ -516,6 +547,16 @@ button.progress-cell:focus-visible {
   gap: 4px;
 }
 
+#view-today .habit-card {
+  flex-wrap: wrap;
+}
+
+#view-today .habit-actions {
+  width: 100%;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 .btn-small {
   padding: 4px 8px;
   font-size: 13px;
@@ -541,6 +582,8 @@ button.progress-cell:focus-visible {
 }
 
 .date-center {
+  flex: 1;
+  min-width: 0;
   text-align: center;
 }
 
@@ -548,7 +591,14 @@ button.progress-cell:focus-visible {
   font-weight: 600;
 }
 
+.date-bar > .date-label {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
 .btn-icon {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   border: 1px solid var(--border);
