@@ -1,6 +1,6 @@
 import { addDays, fromKey, MONTHS, MONTHS_OF, startOfMonth, startOfWeek, startOfYear, toKey, today } from "./dates.js";
 import { getHabits, toggleResult } from "./model.js";
-import { countMarkedDays, currentStreak, dayState, overallRate, scheduledDays, successRate } from "./stats.js";
+import { countMarkedDays, dayState, overallRate, scheduledDays, successRate } from "./stats.js";
 
 const overallRateLabel = document.getElementById("overall-rate");
 const overallProgress = document.getElementById("overall-progress");
@@ -73,11 +73,13 @@ function renderWeekGrid(habits, start, end) {
   for (const habit of habits) {
     const item = document.createElement("li");
     item.className = "week-habit " + habit.type;
+    item.style.setProperty("--habit-color", habit.color);
 
     const nameWrap = document.createElement("div");
     nameWrap.className = "week-habit-name";
     const marker = document.createElement("span");
     marker.className = "habit-marker";
+    marker.textContent = habit.type === "todo" ? "●" : "×";
     marker.setAttribute("aria-hidden", "true");
     const name = document.createElement("strong");
     name.textContent = habit.name;
@@ -131,7 +133,7 @@ function renderWeekGrid(habits, start, end) {
   }
 }
 
-function renderMonthCalendar(start, end) {
+function renderMonthCalendar(habits, start, end) {
   const todayKey = toKey(today());
   const leadingDays = (start.getDay() + 6) % 7;
 
@@ -175,6 +177,19 @@ function renderMonthCalendar(start, end) {
       percentage.className = "calendar-day-rate";
       percentage.textContent = Math.round(rate) + "%";
       cell.appendChild(percentage);
+
+      const indicators = document.createElement("span");
+      indicators.className = "calendar-day-indicators";
+      indicators.setAttribute("aria-hidden", "true");
+      for (const habit of habits) {
+        if (dayState(habit, date) === "done") {
+          const indicator = document.createElement("span");
+          indicator.className = "calendar-indicator";
+          indicator.style.backgroundColor = habit.color;
+          indicators.appendChild(indicator);
+        }
+      }
+      cell.appendChild(indicators);
     }
 
     calendarDays.appendChild(cell);
@@ -193,19 +208,18 @@ function renderBars(habits, start, end) {
   for (const habit of habits) {
     const item = document.createElement("li");
     item.className = "progress-card " + habit.type;
+    item.style.setProperty("--habit-color", habit.color);
 
     const marker = document.createElement("span");
     marker.className = "habit-marker";
+    marker.textContent = habit.type === "todo" ? "●" : "×";
     marker.setAttribute("aria-hidden", "true");
 
     const info = document.createElement("div");
     info.className = "progress-card-info";
     const name = document.createElement("strong");
     name.textContent = habit.name;
-    const streak = document.createElement("small");
-    streak.textContent = "Streak: " + currentStreak(habit) + " d.";
     info.appendChild(name);
-    info.appendChild(streak);
 
     const rate = successRate(habit, start, end);
     const bar = document.createElement("progress");
@@ -301,7 +315,7 @@ export function renderProgress() {
     if (selectedPeriod === "week") {
       renderWeekGrid(habits, start, end);
     } else {
-      renderMonthCalendar(start, end);
+      renderMonthCalendar(habits, start, end);
     }
   } else {
     renderBars(habits, start, end);

@@ -3,8 +3,29 @@ import { load, save } from "./storage.js";
 import { addDays, toKey, today } from "./dates.js";
 
 const NAME_MAX = 50;
+const HABIT_COLORS = ["#36b8e6", "#945be8", "#ef646b", "#18b7b0", "#df62b5", "#d99a37"];
 
 let state = load();
+
+function nextHabitColor() {
+  for (const color of HABIT_COLORS) {
+    if (!state.habits.some(habit => habit.color === color)) {
+      return color;
+    }
+  }
+  return HABIT_COLORS[state.habits.length % HABIT_COLORS.length];
+}
+
+let colorsAdded = false;
+for (const habit of state.habits) {
+  if (!habit.color) {
+    habit.color = nextHabitColor();
+    colorsAdded = true;
+  }
+}
+if (colorsAdded) {
+  save(state);
+}
 
 export function validateHabit(name, type, days) {
   const errors = {};
@@ -82,7 +103,7 @@ export function addDemoData() {
       continue;
     }
 
-    const habit = { ...demoHabit, createdAt: toKey(start) };
+    const habit = { ...demoHabit, color: nextHabitColor(), createdAt: toKey(start) };
     state.habits.push(habit);
     state.results[habit.id] = {};
 
@@ -115,6 +136,7 @@ export function createHabit(name, type, days) {
     name: name.trim(),
     type: type,
     days: days,
+    color: nextHabitColor(),
     createdAt: toKey(today())
   };
 

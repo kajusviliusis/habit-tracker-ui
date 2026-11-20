@@ -4,6 +4,7 @@ import { getHabits, getHabitsForDate, isMarked, toggleResult } from "./model.js"
 import { WEEKDAYS_SHORT, today, addDays, toKey, formatLong } from "./dates.js";
 import { openEditForm, openDeleteConfirm } from "./ui-form.js";
 import { renderProgress } from "./ui-progress.js";
+import { currentStreak } from "./stats.js";
 
 const emptyState = document.getElementById("empty-state");
 const todoGroup = document.getElementById("todo-group");
@@ -64,13 +65,15 @@ function formatDays(days) {
 function createHabitCard(habit) {
     const card = document.createElement("li");
     card.className = "habit-card " + habit.type;
+    card.style.setProperty("--habit-color", habit.color);
 
     const icon = document.createElement("span");
     icon.className = "habit-icon";
+    icon.setAttribute("aria-hidden", "true");
     if (habit.type === "todo") {
-        icon.textContent = "◎";
+        icon.textContent = "●";
     } else {
-        icon.textContent = "⊘";
+        icon.textContent = "×";
     }
 
     const info = document.createElement("div");
@@ -80,11 +83,33 @@ function createHabitCard(habit) {
     name.className = "habit-name";
     name.textContent = habit.name;
 
+    const streak = document.createElement("span");
+    streak.className = "habit-streak";
+    const streakCount = currentStreak(habit);
+    streak.textContent = streakCount;
+    streak.setAttribute("aria-label", "Dabartinė seka: " + streakCount + " d.");
+
+    const svgNamespace = "http://www.w3.org/2000/svg";
+    const flame = document.createElementNS(svgNamespace, "svg");
+    flame.classList.add("streak-flame");
+    flame.setAttribute("viewBox", "0 0 24 24");
+    flame.setAttribute("aria-hidden", "true");
+    const flamePath = document.createElementNS(svgNamespace, "path");
+    flamePath.setAttribute("d", "M12 2c1 3-1 5-1 7 0 1.2.4 2 1.3 2.8.3-1.5 1.8-3 2.2-4.3 3.1 2.7 4.5 5.5 4.5 8.2a7 7 0 0 1-14 0c0-3 1.6-5.7 4.6-8.2-.1 2.3.6 4 1.9 5.1-.7-2 .1-3.8 1-5.4C12 5.4 12.3 3.6 12 2ZM12 20.2a3.2 3.2 0 0 0 3.2-3.2c0-1.3-.6-2.4-1.6-3.5-.2 1.3-1.1 2.1-1.8 2.5-.3-.8-.4-1.6-.3-2.4-1.5 1.3-2.7 2.7-2.7 4.4a3.2 3.2 0 0 0 3.2 3.2Z");
+    flamePath.setAttribute("fill-rule", "evenodd");
+    flame.appendChild(flamePath);
+    streak.appendChild(flame);
+
+    const titleRow = document.createElement("div");
+    titleRow.className = "habit-title-row";
+    titleRow.appendChild(name);
+    titleRow.appendChild(streak);
+
     const days = document.createElement("div");
     days.className = "habit-days";
     days.textContent = formatDays(habit.days);
 
-    info.appendChild(name);
+    info.appendChild(titleRow);
     info.appendChild(days);
 
     const actions = document.createElement("div");
