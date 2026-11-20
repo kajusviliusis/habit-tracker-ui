@@ -1,5 +1,5 @@
 import { addDays, fromKey, MONTHS, MONTHS_OF, startOfMonth, startOfWeek, startOfYear, toKey, today } from "./dates.js";
-import { getHabits } from "./model.js";
+import { getHabits, toggleResult } from "./model.js";
 import { countMarkedDays, currentStreak, dayState, overallRate, scheduledDays, successRate } from "./stats.js";
 
 const overallRateLabel = document.getElementById("overall-rate");
@@ -18,6 +18,11 @@ const btnNextPeriod = document.getElementById("btn-next-period");
 let selectedPeriod = "all";
 let selectedView = "bars";
 let periodDate = today();
+let onGridChange = function () {};
+
+export function setOnGridChange(fn) {
+  onGridChange = fn;
+}
 
 function formatRate(rate) {
   return rate === "–" ? rate : Math.round(rate) + " %";
@@ -45,6 +50,9 @@ function formatPeriod(start, end) {
 }
 
 function renderGrid(habits, start, end) {
+  const startKey = toKey(start);
+  const endKey = toKey(end);
+  const todayKey = toKey(today());
   const stateLabels = {
     done: "Pažymėta",
     missed: "Praleista",
@@ -63,15 +71,29 @@ function renderGrid(habits, start, end) {
     const days = document.createElement("div");
     days.className = "grid-days";
 
-    for (let date = start; toKey(date) <= toKey(end); date = addDays(date, 1)) {
+    for (let date = start; toKey(date) <= endKey; date = addDays(date, 1)) {
+      const dateKey = toKey(date);
       const state = dayState(habit, date);
       const dateLabel = date.getFullYear() + " m. " + MONTHS_OF[date.getMonth()] + " " + date.getDate() + " d.";
-      const cell = document.createElement("span");
+      const canToggle = dateKey < todayKey && (state === "done" || state === "missed");
+      const cell = document.createElement(canToggle ? "button" : "span");
       cell.className = "progress-cell is-" + state;
       cell.title = dateLabel + " – " + stateLabels[state];
-      cell.setAttribute("role", "img");
-      cell.setAttribute("aria-label", habit.name + ", " + dateLabel + ": " + stateLabels[state]);
-      if (toKey(date) === toKey(start)) {
+      if (canToggle) {
+        cell.type = "button";
+        cell.setAttribute("aria-pressed", state === "done");
+        cell.setAttribute("aria-label", habit.name + ", " + dateLabel + ": " + stateLabels[state] + ". " +
+          (state === "done" ? "Atšaukti žymėjimą" : "Pažymėti"));
+        cell.addEventListener("click", function () {
+          toggleResult(habit.id, dateKey);
+          renderProgress();
+          onGridChange();
+        });
+      } else {
+        cell.setAttribute("role", "img");
+        cell.setAttribute("aria-label", habit.name + ", " + dateLabel + ": " + stateLabels[state]);
+      }
+      if (dateKey === startKey) {
         cell.style.gridColumn = String((date.getDay() + 6) % 7 + 1);
       }
       days.appendChild(cell);

@@ -1,6 +1,6 @@
 import { setOnChange } from "./ui-form.js";
 import { renderList } from "./ui-today.js";
-import { renderProgress } from "./ui-progress.js";
+import { renderProgress, setOnGridChange } from "./ui-progress.js";
 
 const btnToday = document.getElementById("btn-today");
 const btnProgress = document.getElementById("btn-progress");
@@ -36,6 +36,7 @@ setOnChange(function () {
   renderList();
   renderProgress();
 });
+setOnGridChange(renderList);
 
 renderList();
 renderProgress();
