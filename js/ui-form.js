@@ -20,6 +20,7 @@ const deleteModal = document.getElementById("delete-modal");
 const deleteName = document.getElementById("delete-name");
 const btnDeleteCancel = document.getElementById("btn-delete-cancel");
 const btnDeleteConfirm = document.getElementById("btn-delete-confirm");
+const toast = document.getElementById("toast");
 
 
 let selectedDays = [];
@@ -28,11 +29,21 @@ let deletingId = null;
 let deleteTrigger = null;
 let nameTouched = false;
 let daysTouched = false;
+let toastTimer;
 
 let onChange = function () {};
 
 export function setOnChange(fn) {
   onChange = fn;
+}
+
+function showToast(message) {
+  clearTimeout(toastTimer);
+  toast.hidden = false;
+  toast.textContent = message;
+  toastTimer = setTimeout(function () {
+    toast.hidden = true;
+  }, 2500);
 }
 
 function openForm() {
@@ -195,6 +206,7 @@ function saveForm() {
   if (result.ok) {
     closeForm();
     onChange();
+    showToast("Išsaugota");
   } else {
     nameTouched = true;
     daysTouched = true;
@@ -234,6 +246,7 @@ function confirmDelete() {
   } else {
     btnAdd.focus();
   }
+  showToast("Įprotis pašalintas");
 }
 
 btnAdd.addEventListener("click", openForm);
