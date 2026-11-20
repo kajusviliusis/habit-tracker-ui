@@ -8,6 +8,9 @@ const viewToday = document.getElementById("view-today");
 const viewProgress = document.getElementById("view-progress");
 
 function showView(name) {
+  btnToday.setAttribute("aria-pressed", name === "today");
+  btnProgress.setAttribute("aria-pressed", name === "progress");
+
   if (name === "today") {
     viewToday.hidden = false;
     viewProgress.hidden = true;

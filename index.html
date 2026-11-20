@@ -12,8 +12,8 @@
   <header class="app-header">
     <h1 class="app-title">Įpročiai</h1>
     <nav class="app-nav">
-      <button type="button" id="btn-today" class="nav-btn is-active">Šiandien</button>
-      <button type="button" id="btn-progress" class="nav-btn">Pažanga</button>
+      <button type="button" id="btn-today" class="nav-btn is-active" aria-controls="view-today" aria-pressed="true">Šiandien</button>
+      <button type="button" id="btn-progress" class="nav-btn" aria-controls="view-progress" aria-pressed="false">Pažanga</button>
     </nav>
   </header>
 
@@ -35,18 +35,18 @@
 
       <button type="button" id="btn-add" class="btn-primary">+ Naujas įprotis</button>
 
-      <div id="habit-form" class="card" hidden>
+      <div id="habit-form" class="card" role="region" aria-labelledby="form-title" hidden>
         <h3 id="form-title">Naujas įprotis</h3>
 
         <label for="habit-name" class="label">Pavadinimas</label>
         <div class="name-row">
-          <input type="text" id="habit-name" maxlength="50" placeholder="Bėgioti 5 km">
+          <input type="text" id="habit-name" maxlength="50" placeholder="Bėgioti 5 km" aria-describedby="name-counter name-error">
           <span id="name-counter" class="counter">0/50</span>
         </div>
-        <p id="name-error" class="error"></p>
+        <p id="name-error" class="error" aria-live="polite"></p>
 
         <p class="label">Tipas</p>
-        <div class="type-row">
+        <div class="type-row" role="group" aria-label="Įpročio tipas">
           <label class="type-option todo">
             <input type="radio" name="type" id="type-todo"> To-Do
           </label>
@@ -69,9 +69,9 @@
           <button type="button" class="day-btn" data-day="6">Š</button>
           <button type="button" class="day-btn" data-day="0">S</button>
         </div>
-        <p id="days-error" class="error"></p>
+        <p id="days-error" class="error" aria-live="polite"></p>
 
-        <p id="form-error" class="error"></p>
+        <p id="form-error" class="error" aria-live="polite"></p>
 
         <div class="form-actions">
           <button type="button" id="btn-cancel" class="btn-secondary">Atšaukti</button>
@@ -112,7 +112,7 @@
         <button type="button" class="nav-btn progress-view-btn" data-view="bars">Juostos</button>
       </div>
       <div class="card progress-summary">
-        <p>Bendra pažanga: <strong id="overall-rate">–</strong></p>
+        <p>Bendra pažanga: <strong id="overall-rate" aria-live="polite">–</strong></p>
       </div>
       <p id="progress-empty" class="placeholder" hidden>Dar nėra įpročių.</p>
       <div id="progress-grid" hidden>
@@ -134,9 +134,9 @@
   </main>
 
   <div id="delete-modal" class="modal-backdrop" hidden>
-    <div class="modal">
-      <h3>Pašalinti įprotį?</h3>
-      <p>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <h3 id="delete-title">Pašalinti įprotį?</h3>
+      <p id="delete-description">
         Įprotis „<strong id="delete-name"></strong>“ ir visa jo istorija bus ištrinti.
         Šio veiksmo atšaukti negalima.
       </p>

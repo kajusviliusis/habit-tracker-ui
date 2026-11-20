@@ -80,6 +80,7 @@ function createHabitCard(habit) {
     const marked = isMarked(habit.id, dateKey);
 
     const btnMark = document.createElement("button");
+    btnMark.id = "mark-" + habit.id;
     btnMark.type = "button";
     btnMark.className = "btn-mark";
     btnMark.setAttribute("aria-pressed", marked);
@@ -99,17 +100,20 @@ function createHabitCard(habit) {
     } else {
         btnMark.textContent = "Pažymėti";
     }
+    btnMark.setAttribute("aria-label", habit.name + ": " + btnMark.textContent);
 
     btnMark.addEventListener("click", function () {
         toggleResult(habit.id, dateKey);
         renderList();
         renderProgress();
+        document.getElementById("mark-" + habit.id).focus();
     });
 
     const btnEdit = document.createElement("button");
     btnEdit.type = "button";
     btnEdit.className = "btn-small";
     btnEdit.textContent = "Redaguoti";
+    btnEdit.setAttribute("aria-label", "Redaguoti įprotį „" + habit.name + "“");
     btnEdit.addEventListener("click", function () {
         openEditForm(habit.id);
     });
@@ -118,8 +122,9 @@ function createHabitCard(habit) {
     btnDelete.type = "button";
     btnDelete.className = "btn-small";
     btnDelete.textContent = "Šalinti";
+    btnDelete.setAttribute("aria-label", "Šalinti įprotį „" + habit.name + "“");
     btnDelete.addEventListener("click", function () {
-        openDeleteConfirm(habit.id);
+        openDeleteConfirm(habit.id, btnDelete);
     });
 
     actions.appendChild(btnMark);

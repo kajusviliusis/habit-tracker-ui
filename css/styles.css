@@ -9,7 +9,7 @@
   --accent: #705E46;
   --accent-bg: #D6B588;
 
-  --todo: #6b7f3a;
+  --todo: #657835;
   --todo-bg: #e9ecd9;
   --todo-text: #3a4620;
 
@@ -45,6 +45,12 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #1d5d8f;
+  outline-offset: 2px;
+}
+
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -73,7 +79,7 @@ button {
 
 .nav-btn.is-active {
   background: var(--accent-bg);
-  color: var(--accent);
+  color: var(--text);
 }
 
 
@@ -195,7 +201,7 @@ button {
 .day-btn.is-selected {
   background: var(--accent-bg);
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--text);
 }
 
 .error {
@@ -235,7 +241,7 @@ button {
 .quick-btn.is-selected {
   background: var(--accent-bg);
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--text);
 }
 
 .modal-backdrop {
@@ -310,7 +316,7 @@ button {
 
 .period-btn.is-active {
   background: var(--accent-bg);
-  color: var(--accent);
+  color: var(--text);
 }
 
 .progress-summary {
@@ -428,11 +434,12 @@ button {
 }
 
 .progress-cell.is-not-scheduled {
-  border-color: var(--border);
+  border-color: #7b7167;
   background: #e9e6e2;
 }
 
 .progress-cell.is-future {
+  border-color: #7b7167;
   border-style: dashed;
 }
 

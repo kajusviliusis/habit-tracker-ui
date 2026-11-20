@@ -80,6 +80,8 @@ function renderGrid(habits, start, end) {
       cell.className = "progress-cell is-" + state;
       cell.title = dateLabel + " – " + stateLabels[state];
       if (canToggle) {
+        const cellId = "grid-" + habit.id + "-" + dateKey;
+        cell.id = cellId;
         cell.type = "button";
         cell.setAttribute("aria-pressed", state === "done");
         cell.setAttribute("aria-label", habit.name + ", " + dateLabel + ": " + stateLabels[state] + ". " +
@@ -87,6 +89,10 @@ function renderGrid(habits, start, end) {
         cell.addEventListener("click", function () {
           toggleResult(habit.id, dateKey);
           renderProgress();
+          const updatedCell = document.getElementById(cellId);
+          if (updatedCell) {
+            updatedCell.focus();
+          }
           onGridChange();
         });
       } else {
@@ -177,7 +183,7 @@ export function renderProgress() {
     bar.className = "progress-bar";
     bar.max = 100;
     bar.value = rate === "–" ? 0 : rate;
-    bar.setAttribute("aria-label", habit.name + ": " + formatRate(rate));
+    bar.setAttribute("aria-label", habit.name + ": " + (rate === "–" ? "nėra suplanuotų dienų" : formatRate(rate)));
 
     const marked = countMarkedDays(habit, start, end);
     const total = scheduledDays(habit, start, end);

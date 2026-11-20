@@ -25,6 +25,7 @@ const btnDeleteConfirm = document.getElementById("btn-delete-confirm");
 let selectedDays = [];
 let editingId = null;
 let deletingId = null;
+let deleteTrigger = null;
 let nameTouched = false;
 let daysTouched = false;
 
@@ -72,6 +73,7 @@ function closeForm() {
   form.hidden = true;
   btnAdd.hidden = false;
   editingId = null;
+  btnAdd.focus();
 }
 
 function resetForm() {
@@ -121,8 +123,10 @@ function updateDayButtons() {
 
     if (selectedDays.indexOf(day) !== -1) {
       dayButtons[i].classList.add("is-selected");
+      dayButtons[i].setAttribute("aria-pressed", true);
     } else {
       dayButtons[i].classList.remove("is-selected");
+      dayButtons[i].setAttribute("aria-pressed", false);
     }
   }
   updateQuickButtons();
@@ -135,6 +139,8 @@ function updateQuickButtons() {
 
   const isEveryday = selectedDays.length === 7;
   const isWeekdays = selectedDays.length === 5 && !hasSaturday && !hasSunday;
+  btnEveryday.setAttribute("aria-pressed", isEveryday);
+  btnWeekdays.setAttribute("aria-pressed", isWeekdays);
 
   if (isEveryday) {
     btnEveryday.classList.add("is-selected");
@@ -163,6 +169,7 @@ function validateForm() {
   const errors = validateHabit(nameInput.value, getType(), selectedDays);
 
   btnSave.disabled = hasErrors(errors);
+  nameInput.setAttribute("aria-invalid", Boolean(nameTouched && errors.name));
 
   if (nameTouched && errors.name) {
     nameError.textContent = errors.name;
@@ -195,13 +202,14 @@ function saveForm() {
   }
 }
 
-export function openDeleteConfirm(id) {
+export function openDeleteConfirm(id, triggerButton) {
   const habit = getHabit(id);
   if (habit === null) {
     return;
   }
 
   deletingId = id;
+  deleteTrigger = triggerButton;
   deleteName.textContent = habit.name;
   deleteModal.hidden = false;
   btnDeleteCancel.focus();
@@ -210,6 +218,10 @@ export function openDeleteConfirm(id) {
 function closeDeleteConfirm() {
   deleteModal.hidden = true;
   deletingId = null;
+  if (deleteTrigger) {
+    deleteTrigger.focus();
+  }
+  deleteTrigger = null;
 }
 
 
@@ -217,6 +229,11 @@ function confirmDelete() {
   deleteHabit(deletingId);
   closeDeleteConfirm();
   onChange();
+  if (btnAdd.hidden) {
+    btnCancel.focus();
+  } else {
+    btnAdd.focus();
+  }
 }
 
 btnAdd.addEventListener("click", openForm);
@@ -251,6 +268,21 @@ btnDeleteConfirm.addEventListener("click", confirmDelete);
 deleteModal.addEventListener("click", function (event) {
   if (event.target === deleteModal) {
     closeDeleteConfirm();
+  }
+});
+
+deleteModal.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeDeleteConfirm();
+  } else if (event.key === "Tab") {
+    if (event.shiftKey && document.activeElement === btnDeleteCancel) {
+      event.preventDefault();
+      btnDeleteConfirm.focus();
+    } else if (!event.shiftKey && document.activeElement === btnDeleteConfirm) {
+      event.preventDefault();
+      btnDeleteCancel.focus();
+    }
   }
 });
 
