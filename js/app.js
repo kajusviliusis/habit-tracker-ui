@@ -1,11 +1,14 @@
 import { setOnChange } from "./ui-form.js";
 import { renderList } from "./ui-today.js";
 import { renderProgress, setOnGridChange } from "./ui-progress.js";
+import { addDemoData } from "./model.js";
 
 const btnToday = document.getElementById("btn-today");
 const btnProgress = document.getElementById("btn-progress");
 const viewToday = document.getElementById("view-today");
 const viewProgress = document.getElementById("view-progress");
+const btnDemo = document.getElementById("btn-demo");
+const demoStatus = document.getElementById("demo-status");
 
 function showView(name) {
   btnToday.setAttribute("aria-pressed", name === "today");
@@ -33,6 +36,15 @@ btnToday.addEventListener("click", function () {
 btnProgress.addEventListener("click", function () {
   renderProgress();
   showView("progress");
+});
+
+btnDemo.addEventListener("click", function () {
+  const added = addDemoData();
+  renderList();
+  renderProgress();
+  demoStatus.textContent = added > 0
+    ? "Pavyzdiniai duomenys įkelti."
+    : "Pavyzdiniai duomenys jau įkelti.";
 });
 
 setOnChange(function () {

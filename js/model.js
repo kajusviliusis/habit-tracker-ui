@@ -1,6 +1,6 @@
 
 import { load, save } from "./storage.js";
-import { toKey, today } from "./dates.js";
+import { addDays, toKey, today } from "./dates.js";
 
 const NAME_MAX = 50;
 
@@ -66,6 +66,41 @@ export function getHabitsForDate(date) {
   }
 
   return result;
+}
+
+export function addDemoData() {
+  const demoHabits = [
+    { id: "demo_read", name: "Skaityti", type: "todo", days: [0, 1, 2, 3, 4, 5, 6] },
+    { id: "demo_exercise", name: "Sportuoti", type: "todo", days: [1, 3, 5] },
+    { id: "demo_sweets", name: "Nevalgyti saldumynų", type: "nottodo", days: [0, 1, 2, 3, 4, 5, 6] }
+  ];
+  const start = addDays(today(), -59);
+  let added = 0;
+
+  for (const demoHabit of demoHabits) {
+    if (getHabit(demoHabit.id) !== null) {
+      continue;
+    }
+
+    const habit = { ...demoHabit, createdAt: toKey(start) };
+    state.habits.push(habit);
+    state.results[habit.id] = {};
+
+    for (let day = 0; day < 60; day++) {
+      const date = addDays(start, day);
+      if (habit.days.includes(date.getDay()) && day % 7 !== 0) {
+        state.results[habit.id][toKey(date)] = true;
+      }
+    }
+
+    added++;
+  }
+
+  if (added > 0) {
+    save(state);
+  }
+
+  return added;
 }
 
 
