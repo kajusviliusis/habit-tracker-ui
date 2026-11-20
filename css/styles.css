@@ -914,7 +914,6 @@ button.progress-cell:focus-visible {
   display: block;
   width: 13px;
   height: 15px;
-  fill: #ed665e;
   transform: translateY(-1px);
 }
 

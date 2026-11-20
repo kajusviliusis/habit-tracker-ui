@@ -89,15 +89,11 @@ function createHabitCard(habit) {
     streak.textContent = streakCount;
     streak.setAttribute("aria-label", "Dabartinė seka: " + streakCount + " d.");
 
-    const svgNamespace = "http://www.w3.org/2000/svg";
-    const flame = document.createElementNS(svgNamespace, "svg");
-    flame.classList.add("streak-flame");
-    flame.setAttribute("viewBox", "0 0 24 24");
+    const flame = document.createElement("img");
+    flame.className = "streak-flame";
+    flame.src = "assets/flame.svg";
+    flame.alt = "";
     flame.setAttribute("aria-hidden", "true");
-    const flamePath = document.createElementNS(svgNamespace, "path");
-    flamePath.setAttribute("d", "M12 2c1 3-1 5-1 7 0 1.2.4 2 1.3 2.8.3-1.5 1.8-3 2.2-4.3 3.1 2.7 4.5 5.5 4.5 8.2a7 7 0 0 1-14 0c0-3 1.6-5.7 4.6-8.2-.1 2.3.6 4 1.9 5.1-.7-2 .1-3.8 1-5.4C12 5.4 12.3 3.6 12 2ZM12 20.2a3.2 3.2 0 0 0 3.2-3.2c0-1.3-.6-2.4-1.6-3.5-.2 1.3-1.1 2.1-1.8 2.5-.3-.8-.4-1.6-.3-2.4-1.5 1.3-2.7 2.7-2.7 4.4a3.2 3.2 0 0 0 3.2 3.2Z");
-    flamePath.setAttribute("fill-rule", "evenodd");
-    flame.appendChild(flamePath);
     streak.appendChild(flame);
 
     const titleRow = document.createElement("div");
